@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>ys.wikiparser</groupId>
+  <artifactId>creole-parser</artifactId>
+  <version>1.0.004</version>
+  <versioning>
+    <versions>
+      <version>1.0.004</version>
+    </versions>
+    <lastUpdated>20120222152210</lastUpdated>
+  </versioning>
+</metadata>

@@ -1,0 +1,14 @@
+#NOTE: This is an internal implementation file, its format can be changed without prior notice.
+#Sun Jan 29 21:12:56 CET 2012
+https\://repository.jboss.org/nexus/content/repositories/releases/.lastUpdated=1327867975091
+default-http\://repository.jboss.org/maven2/.lastUpdated=1327867976374
+http\://spring-roo-repository.springsource.org/release/.error=
+http\://maven.springframework.org/release/.error=
+http\://spring-roo-repository.springsource.org/release/.lastUpdated=1327867970581
+https\://repository.jboss.org/nexus/content/repositories/releases/.error=
+http\://maven.springframework.org/release/.lastUpdated=1327867968036
+http\://maven.springframework.org/milestone/.lastUpdated=1327867968813
+http\://maven.springframework.org/milestone/.error=
+http\://repo1.maven.org/maven2/.error=
+http\://repo1.maven.org/maven2/.lastUpdated=1327867976755
+http\://repository.jboss.org/maven2/.error=Could not transfer artifact ys.wikiparser\:creole-parser\:pom\:1.0.004 from/to JBoss Repo 2 (http\://repository.jboss.org/maven2/)\: Access denied to http\://repository.jboss.org/maven2/ys/wikiparser/creole-parser/1.0.004/creole-parser-1.0.004.pom. Error code 403, Forbidden

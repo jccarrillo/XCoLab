@@ -1,0 +1,19 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>xdoclet</groupId>
+  <artifactId>xdoclet-web-module</artifactId>
+  <name>XDoclet Web Module</name>
+  <version>1.2.1</version>
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>xdoclet</groupId>
+      <artifactId>xdoclet</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+  </dependencies>
+</project>
