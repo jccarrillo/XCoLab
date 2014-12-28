@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class MessagingMessageConversionServiceClpInvoker {
-    private String _methodName560;
-    private String[] _methodParameterTypes560;
-    private String _methodName561;
-    private String[] _methodParameterTypes561;
+    private String _methodName562;
+    private String[] _methodParameterTypes562;
+    private String _methodName563;
+    private String[] _methodParameterTypes563;
 
     public MessagingMessageConversionServiceClpInvoker() {
-        _methodName560 = "getBeanIdentifier";
+        _methodName562 = "getBeanIdentifier";
 
-        _methodParameterTypes560 = new String[] {  };
+        _methodParameterTypes562 = new String[] {  };
 
-        _methodName561 = "setBeanIdentifier";
+        _methodName563 = "setBeanIdentifier";
 
-        _methodParameterTypes561 = new String[] { "java.lang.String" };
+        _methodParameterTypes563 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName560.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes560, parameterTypes)) {
+        if (_methodName562.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes562, parameterTypes)) {
             return MessagingMessageConversionServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName561.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
+        if (_methodName563.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes563, parameterTypes)) {
             MessagingMessageConversionServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

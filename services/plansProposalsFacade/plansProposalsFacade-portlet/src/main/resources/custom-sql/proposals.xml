@@ -44,4 +44,26 @@
 		]]>
     </sql>
 
+    <sql id="com.ext.portlet.service.persistence.ProposalFinder.findByContestPhaseIdAndVisible">
+        <![CDATA[
+			SELECT
+			    p.*
+			FROM xcolab_Proposal p
+            JOIN xcolab_Proposal2Phase p2p on p.proposalId = p2p.proposalId
+            WHERE
+                p2p.contestPhaseId = ? AND
+                p.visible = true AND
+                p.proposalId not in
+                    (SELECT
+                        proposalId
+                    FROM xcolab_ProposalContestPhaseAttribute
+                    WHERE
+                        contestPhaseId = ? AND
+                        name = 'VISIBLE' AND
+                        numericValue = 0
+                    )
+            ORDER BY p.proposalId ASC
+		]]>
+    </sql>
+
 </custom-sql>

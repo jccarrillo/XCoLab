@@ -41,12 +41,12 @@ public class PlanPositionItemLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName576;
-    private String[] _methodParameterTypes576;
-    private String _methodName577;
-    private String[] _methodParameterTypes577;
-    private String _methodName582;
-    private String[] _methodParameterTypes582;
+    private String _methodName578;
+    private String[] _methodParameterTypes578;
+    private String _methodName579;
+    private String[] _methodParameterTypes579;
+    private String _methodName584;
+    private String[] _methodParameterTypes584;
 
     public PlanPositionItemLocalServiceClpInvoker() {
         _methodName0 = "addPlanPositionItem";
@@ -139,17 +139,17 @@ public class PlanPositionItemLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanPositionItem"
             };
 
-        _methodName576 = "getBeanIdentifier";
+        _methodName578 = "getBeanIdentifier";
 
-        _methodParameterTypes576 = new String[] {  };
+        _methodParameterTypes578 = new String[] {  };
 
-        _methodName577 = "setBeanIdentifier";
+        _methodName579 = "setBeanIdentifier";
 
-        _methodParameterTypes577 = new String[] { "java.lang.String" };
+        _methodParameterTypes579 = new String[] { "java.lang.String" };
 
-        _methodName582 = "getAllIdsForPlanPositions";
+        _methodName584 = "getAllIdsForPlanPositions";
 
-        _methodParameterTypes582 = new String[] {
+        _methodParameterTypes584 = new String[] {
                 "com.ext.portlet.model.PlanPositions"
             };
     }
@@ -243,20 +243,20 @@ public class PlanPositionItemLocalServiceClpInvoker {
             return PlanPositionItemLocalServiceUtil.updatePlanPositionItem((com.ext.portlet.model.PlanPositionItem) arguments[0]);
         }
 
-        if (_methodName576.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
+        if (_methodName578.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes578, parameterTypes)) {
             return PlanPositionItemLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName577.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
+        if (_methodName579.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes579, parameterTypes)) {
             PlanPositionItemLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName582.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
+        if (_methodName584.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes584, parameterTypes)) {
             return PlanPositionItemLocalServiceUtil.getAllIdsForPlanPositions((com.ext.portlet.model.PlanPositions) arguments[0]);
         }
 

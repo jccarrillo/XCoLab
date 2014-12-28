@@ -9,77 +9,77 @@ import java.util.Arrays;
  * @generated
  */
 public class ModelRunnerServiceClpInvoker {
-    private String _methodName560;
-    private String[] _methodParameterTypes560;
-    private String _methodName561;
-    private String[] _methodParameterTypes561;
-    private String _methodName565;
-    private String[] _methodParameterTypes565;
-    private String _methodName566;
-    private String[] _methodParameterTypes566;
+    private String _methodName562;
+    private String[] _methodParameterTypes562;
+    private String _methodName563;
+    private String[] _methodParameterTypes563;
     private String _methodName567;
     private String[] _methodParameterTypes567;
     private String _methodName568;
     private String[] _methodParameterTypes568;
+    private String _methodName569;
+    private String[] _methodParameterTypes569;
+    private String _methodName570;
+    private String[] _methodParameterTypes570;
 
     public ModelRunnerServiceClpInvoker() {
-        _methodName560 = "getBeanIdentifier";
+        _methodName562 = "getBeanIdentifier";
 
-        _methodParameterTypes560 = new String[] {  };
+        _methodParameterTypes562 = new String[] {  };
 
-        _methodName561 = "setBeanIdentifier";
+        _methodName563 = "setBeanIdentifier";
 
-        _methodParameterTypes561 = new String[] { "java.lang.String" };
+        _methodParameterTypes563 = new String[] { "java.lang.String" };
 
-        _methodName565 = "getScenario";
+        _methodName567 = "getScenario";
 
-        _methodParameterTypes565 = new String[] { "long" };
+        _methodParameterTypes567 = new String[] { "long" };
 
-        _methodName566 = "getModel";
+        _methodName568 = "getModel";
 
-        _methodParameterTypes566 = new String[] { "long" };
+        _methodParameterTypes568 = new String[] { "long" };
 
-        _methodName567 = "runModel";
+        _methodName569 = "runModel";
 
-        _methodParameterTypes567 = new String[] { "long", "java.lang.String" };
+        _methodParameterTypes569 = new String[] { "long", "java.lang.String" };
 
-        _methodName568 = "refreshModels";
+        _methodName570 = "refreshModels";
 
-        _methodParameterTypes568 = new String[] {  };
+        _methodParameterTypes570 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName560.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes560, parameterTypes)) {
+        if (_methodName562.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes562, parameterTypes)) {
             return ModelRunnerServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName561.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
+        if (_methodName563.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes563, parameterTypes)) {
             ModelRunnerServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName565.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes565, parameterTypes)) {
-            return ModelRunnerServiceUtil.getScenario(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName566.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes566, parameterTypes)) {
-            return ModelRunnerServiceUtil.getModel(((Long) arguments[0]).longValue());
-        }
-
         if (_methodName567.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes567, parameterTypes)) {
-            return ModelRunnerServiceUtil.runModel(((Long) arguments[0]).longValue(),
-                (java.lang.String) arguments[1]);
+            return ModelRunnerServiceUtil.getScenario(((Long) arguments[0]).longValue());
         }
 
         if (_methodName568.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes568, parameterTypes)) {
+            return ModelRunnerServiceUtil.getModel(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName569.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes569, parameterTypes)) {
+            return ModelRunnerServiceUtil.runModel(((Long) arguments[0]).longValue(),
+                (java.lang.String) arguments[1]);
+        }
+
+        if (_methodName570.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes570, parameterTypes)) {
             ModelRunnerServiceUtil.refreshModels();
 
             return null;

@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.service.persistence.ProposalFinderUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -625,7 +627,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public List<Proposal> getActiveProposalsInContestPhase(long contestPhaseId)
             throws PortalException, SystemException {
 
-        final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
+        return ProposalFinderUtil.findByContestPhaseIdAndVisible(contestPhaseId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+        // TODO: Remove when finished
+        /*final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
         phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
         phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
 
@@ -641,6 +646,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 .add(PropertyFactoryUtil.forName("proposal.proposalId").notIn(phaseInvisibleProposals));
 
         return dynamicQuery(proposalsInPhaseNotDeleted);
+*/
+
+
     }
 
     /**
