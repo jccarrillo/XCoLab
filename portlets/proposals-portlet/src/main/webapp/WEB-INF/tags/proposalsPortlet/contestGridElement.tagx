@@ -18,7 +18,7 @@
             </h3>
             ${contest.contestName }
             <div class="count">
-                <!--<div class="prop"><strong>${contest.proposalsCount}</strong>
+                <div class="prop"><strong>${contest.proposalsCount}</strong>
                     <c:choose>
                         <c:when test="${contest.proposalsCount == 1}"> proposal</c:when>
                         <c:otherwise> proposals</c:otherwise>
@@ -45,7 +45,6 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-                -->
 			</div>
         </div>
         <c:if test="${not empty contest.flagText}">
