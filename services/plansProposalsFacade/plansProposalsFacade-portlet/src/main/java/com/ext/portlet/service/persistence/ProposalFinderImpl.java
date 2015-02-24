@@ -59,8 +59,10 @@ public class ProposalFinderImpl extends BasePersistenceImpl<Proposal> implements
                 qPos.add(contestPhaseId);
 
                 matchingProposals = (List<Proposal>) QueryUtil.list(q, getDialect(), start, end);
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID_AND_VISIBLE, args, matchingProposals);
-                return matchingProposals;
+
+                if (matchingProposals != null) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID_AND_VISIBLE, args, matchingProposals);
+                }
             } catch (Exception e) {
                 try {
                     throw new SystemException(e);
@@ -72,7 +74,7 @@ public class ProposalFinderImpl extends BasePersistenceImpl<Proposal> implements
             }
         }
 
-        return null;
+        return matchingProposals;
     }
 
     public static final String FIND_BY_CONTEST_PHASE_ID_AND_VISIBLE =
