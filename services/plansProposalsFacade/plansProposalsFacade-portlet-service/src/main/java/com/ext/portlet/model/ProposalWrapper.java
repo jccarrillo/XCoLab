@@ -44,6 +44,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
         attributes.put("authorId", getAuthorId());
         attributes.put("visible", getVisible());
         attributes.put("discussionId", getDiscussionId());
+        attributes.put("resultsDiscussionId", getResultsDiscussionId());
         attributes.put("judgeDiscussionId", getJudgeDiscussionId());
         attributes.put("fellowDiscussionId", getFellowDiscussionId());
         attributes.put("advisorDiscussionId", getAdvisorDiscussionId());
@@ -94,6 +95,12 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
 
         if (discussionId != null) {
             setDiscussionId(discussionId);
+        }
+
+        Long resultsDiscussionId = (Long) attributes.get("resultsDiscussionId");
+
+        if (resultsDiscussionId != null) {
+            setResultsDiscussionId(resultsDiscussionId);
         }
 
         Long judgeDiscussionId = (Long) attributes.get("judgeDiscussionId");
@@ -292,6 +299,26 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     }
 
     /**
+    * Returns the results discussion ID of this proposal.
+    *
+    * @return the results discussion ID of this proposal
+    */
+    @Override
+    public long getResultsDiscussionId() {
+        return _proposal.getResultsDiscussionId();
+    }
+
+    /**
+    * Sets the results discussion ID of this proposal.
+    *
+    * @param resultsDiscussionId the results discussion ID of this proposal
+    */
+    @Override
+    public void setResultsDiscussionId(long resultsDiscussionId) {
+        _proposal.setResultsDiscussionId(resultsDiscussionId);
+    }
+
+    /**
     * Returns the judge discussion ID of this proposal.
     *
     * @return the judge discussion ID of this proposal
@@ -435,7 +462,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.Proposal proposal) {
+    public int compareTo(Proposal proposal) {
         return _proposal.compareTo(proposal);
     }
 
@@ -445,17 +472,17 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Proposal> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<Proposal> toCacheModel() {
         return _proposal.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.Proposal toEscapedModel() {
+    public Proposal toEscapedModel() {
         return new ProposalWrapper(_proposal.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.Proposal toUnescapedModel() {
+    public Proposal toUnescapedModel() {
         return new ProposalWrapper(_proposal.toUnescapedModel());
     }
 

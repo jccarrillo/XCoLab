@@ -14,11 +14,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
-import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
@@ -29,6 +30,7 @@ import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
 import com.ext.portlet.model.ContestPhase;
@@ -645,6 +647,44 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     /**
+     * Returns all contests matching the specified contest tier.
+     * Returns all contests in the case of ContestTier.NONE
+     * @param contestTierType   The specified contest tier
+     * @return                  A list of all Contests matching the specified contest tier
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public List<Contest> getContestsMatchingTier(long contestTierType) throws PortalException, SystemException {
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return contestPersistence.findAll();
+        }
+        return contestPersistence.findByContestTier(contestTierType);
+    }
+
+    /**
+     * Returns all contests matching the specified contest tier and ontology terms.
+     * Returns all contests in the case of ContestTier.NONE
+     * @param contestTierType   The specified contest tier
+     * @return                  A list of all Contests matching the specified contest tier
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public List<Contest> getContestsMatchingOntologyTermsAndTier(List<OntologyTerm> ontologyTerms, long contestTierType) throws PortalException, SystemException{
+        List<Contest> matchedOntologyContests = getContestsMatchingOntologyTerms(ontologyTerms);
+
+        // Ignore tier filter if no contest tier has been selected
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return matchedOntologyContests;
+        }
+
+        List<Contest> matchedTierContests = getContestsMatchingTier(contestTierType);
+
+        // Cut both lists together
+        matchedOntologyContests.retainAll(matchedTierContests);
+        return matchedOntologyContests;
+    }
+
+    /**
      * This method transfers users' supports for proposals in the passed contest to a vote. If a user has only supported
      * one proposal within the passed contest, the support is automatically transferred to a vote and the user is notified
      * about this action. If the user supports more than one proposal in the passed contest, a message is sent to the user
@@ -724,6 +764,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
 
         for (ContestPhase judgingPhase : getAllPhases(contest)) {
+            if(!judgingPhase.getFellowScreeningActive()){
+                continue;
+            }
             for (Proposal proposal : stillActiveProposals) {
                 try {
                     ProposalContestPhaseAttribute fellowActionAttribute = getProposalContestPhaseAttributeLocalService().
@@ -745,15 +788,19 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
-
+                proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase)));
                 List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<ProposalRatingType, List<Long>>();
+
                 for (ProposalRating rating: ratings) {
                     ProposalRatingWrapper wrapper = new ProposalRatingWrapper(rating);
                     if (ratingsPerType.get(wrapper.getRatingType()) == null) {
                         ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
                     }
                     ratingsPerType.get(wrapper.getRatingType()).add(wrapper.getRatingValue().getValue());
+
+                    proposalReview.addUserRating(wrapper.getUser(),wrapper.getRatingType(),wrapper.getRatingValue().getValue());
+
                     occurringRatingTypes.add(wrapper.getRatingType());
                     if (rating.isCommentEnabled()) {
                         proposalReview.addReview(wrapper.getUser(), rating.getComment());
@@ -773,18 +820,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     proposalReview.addRatingAverage(key, avg);
                 }
 
-
                 if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
                     proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
                 }
 
-                if (ratings.size() > 0) {
-                    proposalToProposalReviewsMap.get(proposal).add(proposalReview);
-                }
+                proposalToProposalReviewsMap.get(proposal).add(proposalReview);
             }
         }
 
         ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList(occurringJudges), new ArrayList(occurringRatingTypes));
+
         return csvExporter.getCsvString();
     }
 
@@ -808,6 +853,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                                 ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
 
                 selectedJudges = new ArrayList<>();
+
                 for (String element : judgeIdString.split(";")) {
                     long userId = GetterUtil.getLong(element);
                     User judge = userLocalService.getUser(userId);
@@ -819,10 +865,18 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
         // Choose all judges
         else {
-            selectedJudges = getJudgesForContest(contestLocalService.getContest(judgingPhase.getContestPK()));
+            selectedJudges =  getJudgesForContest(contestLocalService.getContest(judgingPhase.getContestPK()));
         }
 
         return selectedJudges;
+    }
+
+    public List<User> getAdvisorsForContest(Contest contest) throws SystemException, PortalException {
+        Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.ADVISOR))) {
+            return roleToUserMap.get(MemberRole.ADVISOR);
+        }
+        return new ArrayList<>();
     }
 
     public List<User> getJudgesForContest(Contest contest) throws SystemException, PortalException {
@@ -830,7 +884,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGES))) {
             return roleToUserMap.get(MemberRole.JUDGES);
         }
-
         return new ArrayList<>();
     }
 
@@ -839,7 +892,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.FELLOW))) {
             return roleToUserMap.get(MemberRole.FELLOW);
         }
+        return new ArrayList<>();
+    }
 
+    public List<User> getContestManagersForContest(Contest contest) throws SystemException, PortalException {
+        Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTESTMANAGER))) {
+            return roleToUserMap.get(MemberRole.CONTESTMANAGER);
+        }
         return new ArrayList<>();
     }
 

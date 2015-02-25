@@ -46,6 +46,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         attributes.put("helpText", getHelpText());
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
 
         return attributes;
@@ -99,6 +100,12 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long tier = (Long) attributes.get("tier");
+
+        if (tier != null) {
+            setTier(tier);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -289,6 +296,26 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     }
 
     /**
+    * Returns the tier of this plan section definition.
+    *
+    * @return the tier of this plan section definition
+    */
+    @Override
+    public long getTier() {
+        return _planSectionDefinition.getTier();
+    }
+
+    /**
+    * Sets the tier of this plan section definition.
+    *
+    * @param tier the tier of this plan section definition
+    */
+    @Override
+    public void setTier(long tier) {
+        _planSectionDefinition.setTier(tier);
+    }
+
+    /**
     * Returns the locked of this plan section definition.
     *
     * @return the locked of this plan section definition
@@ -382,8 +409,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
+    public int compareTo(PlanSectionDefinition planSectionDefinition) {
         return _planSectionDefinition.compareTo(planSectionDefinition);
     }
 
@@ -393,17 +419,17 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanSectionDefinition> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanSectionDefinition> toCacheModel() {
         return _planSectionDefinition.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanSectionDefinition toEscapedModel() {
+    public PlanSectionDefinition toEscapedModel() {
         return new PlanSectionDefinitionWrapper(_planSectionDefinition.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanSectionDefinition toUnescapedModel() {
+    public PlanSectionDefinition toUnescapedModel() {
         return new PlanSectionDefinitionWrapper(_planSectionDefinition.toUnescapedModel());
     }
 
