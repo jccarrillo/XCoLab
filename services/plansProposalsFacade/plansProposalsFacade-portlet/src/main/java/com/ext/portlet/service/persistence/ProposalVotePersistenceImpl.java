@@ -1891,8 +1891,8 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
         }
     }
 
-    protected void cacheUniqueFindersCache(ProposalVote proposalVote) {
-        if (proposalVote.isNew()) {
+    protected void cacheUniqueFindersCache(ProposalVote proposalVote, boolean isNew) {
+        if (isNew) {
             Object[] args = new Object[] {
                     proposalVote.getContestPhaseId(), proposalVote.getUserId()
                 };
@@ -2142,7 +2142,7 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
             ProposalVoteImpl.class, proposalVote.getPrimaryKey(), proposalVote);
 
         clearUniqueFindersCache(proposalVote);
-        cacheUniqueFindersCache(proposalVote);
+        cacheUniqueFindersCache(proposalVote, isNew);
 
         return proposalVote;
     }
