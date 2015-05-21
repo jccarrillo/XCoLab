@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The persistence implementation for the proposal vote service.
@@ -1875,6 +1876,9 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
+        // Remove count queries
+        clearCountFindersCache(proposalVote);
+
         clearUniqueFindersCache(proposalVote);
     }
 
@@ -1943,6 +1947,28 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
             FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTPHASEIDUSERID,
                 args);
         }
+    }
+
+    protected void clearCountFindersCache(ProposalVote proposalVote) {
+        Object[] proposalIdContestPhaseIdArgs = new Object[] {
+                proposalVote.getProposalId(), proposalVote.getContestPhaseId()
+        };
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDCONTESTPHASEID, proposalIdContestPhaseIdArgs);
+
+        Object[] contestPhaseIdUserIdArgs = new Object[] {
+                proposalVote.getContestPhaseId(), proposalVote.getUserId()
+        };
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTPHASEIDUSERID, contestPhaseIdUserIdArgs);
+
+        Object[] userIdArgs = new Object[] {
+                proposalVote.getUserId()
+        };
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, userIdArgs);
+
+        Object[] proposalIdArgs = new Object[] {
+                proposalVote.getProposalId()
+        };
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID, proposalIdArgs);
     }
 
     /**
@@ -2074,67 +2100,73 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
+        // Remove caches for count queries
+        if (isNew) {
+            clearCountFindersCache(proposalVote);
+        }
+
         if (isNew || !ProposalVoteModelImpl.COLUMN_BITMASK_ENABLED) {
             FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
         }
-
-        if ((proposalVoteModelImpl.getColumnBitmask() &
-                FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
-            Object[] args = new Object[] {
-                    proposalVoteModelImpl.getOriginalProposalId()
+        else {
+            if ((proposalVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalVoteModelImpl.getOriginalProposalId()
                 };
 
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                args);
-            FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
-                args);
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                        args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                        args);
 
-            args = new Object[] { proposalVoteModelImpl.getProposalId() };
+                args = new Object[] { proposalVoteModelImpl.getProposalId() };
 
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                args);
-            FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
-                args);
-        }
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                        args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                        args);
+            }
 
-        if ((proposalVoteModelImpl.getColumnBitmask() &
-                FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID.getColumnBitmask()) != 0) {
-            Object[] args = new Object[] {
-                    proposalVoteModelImpl.getOriginalProposalId(),
-                    proposalVoteModelImpl.getOriginalContestPhaseId()
+            if ((proposalVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalVoteModelImpl.getOriginalProposalId(),
+                        proposalVoteModelImpl.getOriginalContestPhaseId()
                 };
 
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDCONTESTPHASEID,
-                args);
-            FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID,
-                args);
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDCONTESTPHASEID,
+                        args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID,
+                        args);
 
-            args = new Object[] {
-                    proposalVoteModelImpl.getProposalId(),
-                    proposalVoteModelImpl.getContestPhaseId()
+                args = new Object[] {
+                        proposalVoteModelImpl.getProposalId(),
+                        proposalVoteModelImpl.getContestPhaseId()
                 };
 
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDCONTESTPHASEID,
-                args);
-            FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID,
-                args);
-        }
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDCONTESTPHASEID,
+                        args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID,
+                        args);
+            }
 
-        if ((proposalVoteModelImpl.getColumnBitmask() &
-                FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
-            Object[] args = new Object[] {
-                    proposalVoteModelImpl.getOriginalUserId()
+            if ((proposalVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalVoteModelImpl.getOriginalUserId()
                 };
 
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-            FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-                args);
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+                        args);
 
-            args = new Object[] { proposalVoteModelImpl.getUserId() };
+                args = new Object[] { proposalVoteModelImpl.getUserId() };
 
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-            FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-                args);
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+                        args);
+            }
         }
 
         EntityCacheUtil.putResult(ProposalVoteModelImpl.ENTITY_CACHE_ENABLED,
