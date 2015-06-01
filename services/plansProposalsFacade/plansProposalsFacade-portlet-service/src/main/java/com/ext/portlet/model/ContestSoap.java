@@ -51,6 +51,10 @@ public class ContestSoap implements Serializable {
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
+    private String _emailTemplateUrl;
+    private boolean _show_in_tile_view;
+    private boolean _show_in_list_view;
+    private boolean _show_in_outline_view;
 
     public ContestSoap() {
     }
@@ -95,6 +99,10 @@ public class ContestSoap implements Serializable {
         soapModel.setPoints(model.getPoints());
         soapModel.setDefaultParentPointType(model.getDefaultParentPointType());
         soapModel.setPointDistributionStrategy(model.getPointDistributionStrategy());
+        soapModel.setEmailTemplateUrl(model.getEmailTemplateUrl());
+        soapModel.setShow_in_tile_view(model.getShow_in_tile_view());
+        soapModel.setShow_in_list_view(model.getShow_in_list_view());
+        soapModel.setShow_in_outline_view(model.getShow_in_outline_view());
 
         return soapModel;
     }
@@ -458,5 +466,49 @@ public class ContestSoap implements Serializable {
 
     public void setPointDistributionStrategy(String pointDistributionStrategy) {
         _pointDistributionStrategy = pointDistributionStrategy;
+    }
+
+    public String getEmailTemplateUrl() {
+        return _emailTemplateUrl;
+    }
+
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        _emailTemplateUrl = emailTemplateUrl;
+    }
+
+    public boolean getShow_in_tile_view() {
+        return _show_in_tile_view;
+    }
+
+    public boolean isShow_in_tile_view() {
+        return _show_in_tile_view;
+    }
+
+    public void setShow_in_tile_view(boolean show_in_tile_view) {
+        _show_in_tile_view = show_in_tile_view;
+    }
+
+    public boolean getShow_in_list_view() {
+        return _show_in_list_view;
+    }
+
+    public boolean isShow_in_list_view() {
+        return _show_in_list_view;
+    }
+
+    public void setShow_in_list_view(boolean show_in_list_view) {
+        _show_in_list_view = show_in_list_view;
+    }
+
+    public boolean getShow_in_outline_view() {
+        return _show_in_outline_view;
+    }
+
+    public boolean isShow_in_outline_view() {
+        return _show_in_outline_view;
+    }
+
+    public void setShow_in_outline_view(boolean show_in_outline_view) {
+        _show_in_outline_view = show_in_outline_view;
     }
 }

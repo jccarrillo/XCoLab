@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.*;
-
-import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -10,10 +8,18 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 public class ContestWrapper {
+
+    private static final long ONTOLOGY_SPACE_ID_WHERE = 104L;
+    private static final long ONTOLOGY_SPACE_ID_WHO = 102L;
+    private static final long ONTOLOGY_SPACE_ID_WHAT = 103L;
+    private static final long ONTOLOGY_SPACE_ID_HOW = 103L;
+    private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
+
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
     private static final String HOW = "how";
+    private static final String EMAIL_TEMPLATE_URL = "/web/guest/generic-advancing-email-template";
     private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
@@ -87,6 +93,76 @@ public class ContestWrapper {
 
     public void setContestModelDescription(String ContestModelDescription) {
         contest.setContestModelDescription(ContestModelDescription);
+    }
+
+    public String getEmailTemplateUrl() {
+        if (contest.getEmailTemplateUrl().isEmpty()) {
+            return EMAIL_TEMPLATE_URL;
+        } else
+            return contest.getEmailTemplateUrl();
+    }
+
+    public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
+
+    public boolean getShowInTileView(){
+        Boolean contestShowInTileView =  (Boolean) contest.getShow_in_tile_view();
+
+        if (contestShowInTileView != null) {
+            return contest.getShow_in_tile_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShowInTileView(){
+        return contest.isShow_in_tile_view();
+    }
+
+    public void setShowInTileView(boolean showInTileView){
+        contest.setShow_in_tile_view(showInTileView);
+    }
+
+    public boolean getShowInListView(){
+        Boolean contestShowInListView =  (Boolean) contest.getShow_in_list_view();
+
+        if (contestShowInListView != null) {
+            return contest.getShow_in_list_view();
+        }
+        else {
+            contest.setShow_in_list_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShowInListView(){
+        return contest.isShow_in_list_view();
+    }
+
+    public void setShowInListView(boolean showInListView){
+        contest.setShow_in_list_view(showInListView);
+    }
+
+    public boolean getShowInOutlineView(){
+        Boolean contestShowInOutlineView =  (Boolean) contest.getShow_in_outline_view();
+
+        if (contestShowInOutlineView != null) {
+            return contest.getShow_in_outline_view();
+        }
+        else {
+            contest.setShow_in_outline_view(true);
+            return true;
+        }
+
+    }
+
+    public boolean isShowInOutlineView(){
+        return contest.isShow_in_outline_view();
+    }
+
+    public void setShowInOutlineView(boolean showInOutlineView){
+        contest.setShow_in_outline_view(showInOutlineView);
     }
 
     public void resetOriginalValues() {
@@ -375,6 +451,24 @@ public class ContestWrapper {
         	return "";
         }
         return ontologyJoinedName;
+    }
+
+    public boolean getShowSubContests(){
+        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+    }
+    public boolean getShowParentContest(){
+        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
+    }
+
+    public List<Contest> getSubContests() throws Exception{
+        return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+    }
+
+    public Contest getParentContest() throws Exception{
+        List<Long> focusAreaOntologyTermIds =
+                FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
+        List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
+        return contests.get(0);
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {

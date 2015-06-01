@@ -700,6 +700,60 @@ public class ContestLocalServiceUtil {
         return getService().getPointsAccessibleForActivePhaseOfContest(contest);
     }
 
+    public static com.ext.portlet.model.ImpactTemplateSeries getContestImpactTemplateSeries(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestImpactTemplateSeries(contest);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ImpactIteration> getContestImpactIterations(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestImpactIterations(contest);
+    }
+
+    public static com.ext.portlet.model.ImpactTemplateFocusAreaList getContestImpactFocusAreaList(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestImpactFocusAreaList(contest);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestImpactFocusAreas(contest);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
+        java.lang.Long contestTier,
+        java.util.List<java.lang.Long> focusAreaOntologyTermIds)
+        throws java.lang.Exception {
+        return getService()
+                   .getContestsByTierLevelAndOntologyTermIds(contestTier,
+            focusAreaOntologyTermIds);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
+        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        return getService().getContestsByContestScheduleId(contestScheduleId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
+        java.lang.Long planTemplateId) throws java.lang.Exception {
+        return getService().getContestsByPlanTemplateId(planTemplateId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
+        com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
+        throws java.lang.Exception {
+        return getService()
+                   .getSubContestsByOntologySpaceId(contest, ontologySpaceId);
+    }
+
     public static void clearService() {
         _service = null;
     }

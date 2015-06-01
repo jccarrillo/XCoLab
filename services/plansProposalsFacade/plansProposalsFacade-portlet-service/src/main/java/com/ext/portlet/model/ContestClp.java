@@ -58,6 +58,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
+    private String _emailTemplateUrl;
+    private boolean _show_in_tile_view;
+    private boolean _show_in_list_view;
+    private boolean _show_in_outline_view;
     private BaseModel<?> _contestRemoteModel;
 
     public ContestClp() {
@@ -136,6 +140,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
             getPointDistributionStrategy());
+        attributes.put("emailTemplateUrl", getEmailTemplateUrl());
+        attributes.put("show_in_tile_view", getShow_in_tile_view());
+        attributes.put("show_in_list_view", getShow_in_list_view());
+        attributes.put("show_in_outline_view", getShow_in_outline_view());
 
         return attributes;
     }
@@ -370,6 +378,33 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (pointDistributionStrategy != null) {
             setPointDistributionStrategy(pointDistributionStrategy);
+        }
+
+        String emailTemplateUrl = (String) attributes.get("emailTemplateUrl");
+
+        if (emailTemplateUrl != null) {
+            setEmailTemplateUrl(emailTemplateUrl);
+        }
+
+        Boolean show_in_tile_view = (Boolean) attributes.get(
+                "show_in_tile_view");
+
+        if (show_in_tile_view != null) {
+            setShow_in_tile_view(show_in_tile_view);
+        }
+
+        Boolean show_in_list_view = (Boolean) attributes.get(
+                "show_in_list_view");
+
+        if (show_in_list_view != null) {
+            setShow_in_list_view(show_in_list_view);
+        }
+
+        Boolean show_in_outline_view = (Boolean) attributes.get(
+                "show_in_outline_view");
+
+        if (show_in_outline_view != null) {
+            setShow_in_outline_view(show_in_outline_view);
         }
     }
 
@@ -1227,6 +1262,113 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public String getEmailTemplateUrl() {
+        return _emailTemplateUrl;
+    }
+
+    @Override
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        _emailTemplateUrl = emailTemplateUrl;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setEmailTemplateUrl",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, emailTemplateUrl);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getShow_in_tile_view() {
+        return _show_in_tile_view;
+    }
+
+    @Override
+    public boolean isShow_in_tile_view() {
+        return _show_in_tile_view;
+    }
+
+    @Override
+    public void setShow_in_tile_view(boolean show_in_tile_view) {
+        _show_in_tile_view = show_in_tile_view;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setShow_in_tile_view",
+                        boolean.class);
+
+                method.invoke(_contestRemoteModel, show_in_tile_view);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getShow_in_list_view() {
+        return _show_in_list_view;
+    }
+
+    @Override
+    public boolean isShow_in_list_view() {
+        return _show_in_list_view;
+    }
+
+    @Override
+    public void setShow_in_list_view(boolean show_in_list_view) {
+        _show_in_list_view = show_in_list_view;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setShow_in_list_view",
+                        boolean.class);
+
+                method.invoke(_contestRemoteModel, show_in_list_view);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getShow_in_outline_view() {
+        return _show_in_outline_view;
+    }
+
+    @Override
+    public boolean isShow_in_outline_view() {
+        return _show_in_outline_view;
+    }
+
+    @Override
+    public void setShow_in_outline_view(boolean show_in_outline_view) {
+        _show_in_outline_view = show_in_outline_view;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setShow_in_outline_view",
+                        boolean.class);
+
+                method.invoke(_contestRemoteModel, show_in_outline_view);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1331,6 +1473,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setPoints(getPoints());
         clone.setDefaultParentPointType(getDefaultParentPointType());
         clone.setPointDistributionStrategy(getPointDistributionStrategy());
+        clone.setEmailTemplateUrl(getEmailTemplateUrl());
+        clone.setShow_in_tile_view(getShow_in_tile_view());
+        clone.setShow_in_list_view(getShow_in_list_view());
+        clone.setShow_in_outline_view(getShow_in_outline_view());
 
         return clone;
     }
@@ -1388,7 +1534,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(75);
+        StringBundler sb = new StringBundler(83);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1464,6 +1610,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getDefaultParentPointType());
         sb.append(", pointDistributionStrategy=");
         sb.append(getPointDistributionStrategy());
+        sb.append(", emailTemplateUrl=");
+        sb.append(getEmailTemplateUrl());
+        sb.append(", show_in_tile_view=");
+        sb.append(getShow_in_tile_view());
+        sb.append(", show_in_list_view=");
+        sb.append(getShow_in_list_view());
+        sb.append(", show_in_outline_view=");
+        sb.append(getShow_in_outline_view());
         sb.append("}");
 
         return sb.toString();
@@ -1471,7 +1625,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(115);
+        StringBundler sb = new StringBundler(127);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1624,6 +1778,22 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>pointDistributionStrategy</column-name><column-value><![CDATA[");
         sb.append(getPointDistributionStrategy());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailTemplateUrl</column-name><column-value><![CDATA[");
+        sb.append(getEmailTemplateUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>show_in_tile_view</column-name><column-value><![CDATA[");
+        sb.append(getShow_in_tile_view());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>show_in_list_view</column-name><column-value><![CDATA[");
+        sb.append(getShow_in_list_view());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>show_in_outline_view</column-name><column-value><![CDATA[");
+        sb.append(getShow_in_outline_view());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

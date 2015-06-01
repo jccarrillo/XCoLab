@@ -41,32 +41,32 @@ public class PlanFanLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName590;
-    private String[] _methodParameterTypes590;
-    private String _methodName591;
-    private String[] _methodParameterTypes591;
-    private String _methodName596;
-    private String[] _methodParameterTypes596;
-    private String _methodName597;
-    private String[] _methodParameterTypes597;
-    private String _methodName598;
-    private String[] _methodParameterTypes598;
-    private String _methodName599;
-    private String[] _methodParameterTypes599;
-    private String _methodName600;
-    private String[] _methodParameterTypes600;
-    private String _methodName601;
-    private String[] _methodParameterTypes601;
-    private String _methodName602;
-    private String[] _methodParameterTypes602;
-    private String _methodName603;
-    private String[] _methodParameterTypes603;
-    private String _methodName604;
-    private String[] _methodParameterTypes604;
-    private String _methodName605;
-    private String[] _methodParameterTypes605;
-    private String _methodName606;
-    private String[] _methodParameterTypes606;
+    private String _methodName660;
+    private String[] _methodParameterTypes660;
+    private String _methodName661;
+    private String[] _methodParameterTypes661;
+    private String _methodName666;
+    private String[] _methodParameterTypes666;
+    private String _methodName667;
+    private String[] _methodParameterTypes667;
+    private String _methodName668;
+    private String[] _methodParameterTypes668;
+    private String _methodName669;
+    private String[] _methodParameterTypes669;
+    private String _methodName670;
+    private String[] _methodParameterTypes670;
+    private String _methodName671;
+    private String[] _methodParameterTypes671;
+    private String _methodName672;
+    private String[] _methodParameterTypes672;
+    private String _methodName673;
+    private String[] _methodParameterTypes673;
+    private String _methodName674;
+    private String[] _methodParameterTypes674;
+    private String _methodName675;
+    private String[] _methodParameterTypes675;
+    private String _methodName676;
+    private String[] _methodParameterTypes676;
 
     public PlanFanLocalServiceClpInvoker() {
         _methodName0 = "addPlanFan";
@@ -145,63 +145,63 @@ public class PlanFanLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.PlanFan" };
 
-        _methodName590 = "getBeanIdentifier";
+        _methodName660 = "getBeanIdentifier";
 
-        _methodParameterTypes590 = new String[] {  };
+        _methodParameterTypes660 = new String[] {  };
 
-        _methodName591 = "setBeanIdentifier";
+        _methodName661 = "setBeanIdentifier";
 
-        _methodParameterTypes591 = new String[] { "java.lang.String" };
+        _methodParameterTypes661 = new String[] { "java.lang.String" };
 
-        _methodName596 = "getPlanFansForPlan";
+        _methodName666 = "getPlanFansForPlan";
 
-        _methodParameterTypes596 = new String[] { "java.lang.Long" };
+        _methodParameterTypes666 = new String[] { "java.lang.Long" };
 
-        _methodName597 = "countPlanFansForPlan";
+        _methodName667 = "countPlanFansForPlan";
 
-        _methodParameterTypes597 = new String[] { "java.lang.Long" };
+        _methodParameterTypes667 = new String[] { "java.lang.Long" };
 
-        _methodName598 = "getPlanFansForUser";
+        _methodName668 = "getPlanFansForUser";
 
-        _methodParameterTypes598 = new String[] { "java.lang.Long" };
+        _methodParameterTypes668 = new String[] { "java.lang.Long" };
 
-        _methodName599 = "addFan";
+        _methodName669 = "addFan";
 
-        _methodParameterTypes599 = new String[] {
+        _methodParameterTypes669 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName600 = "removePlanFan";
+        _methodName670 = "removePlanFan";
 
-        _methodParameterTypes600 = new String[] {
+        _methodParameterTypes670 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName601 = "getPlanFanByPlanIdUserId";
+        _methodName671 = "getPlanFanByPlanIdUserId";
 
-        _methodParameterTypes601 = new String[] {
+        _methodParameterTypes671 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName602 = "countByUserId";
+        _methodName672 = "countByUserId";
 
-        _methodParameterTypes602 = new String[] { "java.lang.Long" };
+        _methodParameterTypes672 = new String[] { "java.lang.Long" };
 
-        _methodName603 = "getByUserId";
+        _methodName673 = "getByUserId";
 
-        _methodParameterTypes603 = new String[] { "java.lang.Long", "int", "int" };
+        _methodParameterTypes673 = new String[] { "java.lang.Long", "int", "int" };
 
-        _methodName604 = "store";
+        _methodName674 = "store";
 
-        _methodParameterTypes604 = new String[] { "com.ext.portlet.model.PlanFan" };
+        _methodParameterTypes674 = new String[] { "com.ext.portlet.model.PlanFan" };
 
-        _methodName605 = "getUser";
+        _methodName675 = "getUser";
 
-        _methodParameterTypes605 = new String[] { "com.ext.portlet.model.PlanFan" };
+        _methodParameterTypes675 = new String[] { "com.ext.portlet.model.PlanFan" };
 
-        _methodName606 = "getPlan";
+        _methodName676 = "getPlan";
 
-        _methodParameterTypes606 = new String[] { "com.ext.portlet.model.PlanFan" };
+        _methodParameterTypes676 = new String[] { "com.ext.portlet.model.PlanFan" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -293,79 +293,79 @@ public class PlanFanLocalServiceClpInvoker {
             return PlanFanLocalServiceUtil.updatePlanFan((com.ext.portlet.model.PlanFan) arguments[0]);
         }
 
-        if (_methodName590.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes590, parameterTypes)) {
+        if (_methodName660.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes660, parameterTypes)) {
             return PlanFanLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName591.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes591, parameterTypes)) {
+        if (_methodName661.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes661, parameterTypes)) {
             PlanFanLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName596.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes596, parameterTypes)) {
+        if (_methodName666.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes666, parameterTypes)) {
             return PlanFanLocalServiceUtil.getPlanFansForPlan((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName597.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes597, parameterTypes)) {
+        if (_methodName667.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes667, parameterTypes)) {
             return PlanFanLocalServiceUtil.countPlanFansForPlan((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName598.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes598, parameterTypes)) {
+        if (_methodName668.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes668, parameterTypes)) {
             return PlanFanLocalServiceUtil.getPlanFansForUser((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName599.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes599, parameterTypes)) {
+        if (_methodName669.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes669, parameterTypes)) {
             return PlanFanLocalServiceUtil.addFan((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName600.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes600, parameterTypes)) {
+        if (_methodName670.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes670, parameterTypes)) {
             PlanFanLocalServiceUtil.removePlanFan((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName601.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes601, parameterTypes)) {
+        if (_methodName671.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes671, parameterTypes)) {
             return PlanFanLocalServiceUtil.getPlanFanByPlanIdUserId((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName602.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes602, parameterTypes)) {
+        if (_methodName672.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes672, parameterTypes)) {
             return PlanFanLocalServiceUtil.countByUserId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName603.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes603, parameterTypes)) {
+        if (_methodName673.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes673, parameterTypes)) {
             return PlanFanLocalServiceUtil.getByUserId((java.lang.Long) arguments[0],
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName604.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes604, parameterTypes)) {
+        if (_methodName674.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes674, parameterTypes)) {
             PlanFanLocalServiceUtil.store((com.ext.portlet.model.PlanFan) arguments[0]);
 
             return null;
         }
 
-        if (_methodName605.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes605, parameterTypes)) {
+        if (_methodName675.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes675, parameterTypes)) {
             return PlanFanLocalServiceUtil.getUser((com.ext.portlet.model.PlanFan) arguments[0]);
         }
 
-        if (_methodName606.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes606, parameterTypes)) {
+        if (_methodName676.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes676, parameterTypes)) {
             return PlanFanLocalServiceUtil.getPlan((com.ext.portlet.model.PlanFan) arguments[0]);
         }
 

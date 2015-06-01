@@ -41,16 +41,16 @@ public class ProposalVersionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName590;
-    private String[] _methodParameterTypes590;
-    private String _methodName591;
-    private String[] _methodParameterTypes591;
-    private String _methodName596;
-    private String[] _methodParameterTypes596;
-    private String _methodName597;
-    private String[] _methodParameterTypes597;
-    private String _methodName598;
-    private String[] _methodParameterTypes598;
+    private String _methodName660;
+    private String[] _methodParameterTypes660;
+    private String _methodName661;
+    private String[] _methodParameterTypes661;
+    private String _methodName666;
+    private String[] _methodParameterTypes666;
+    private String _methodName667;
+    private String[] _methodParameterTypes667;
+    private String _methodName668;
+    private String[] _methodParameterTypes668;
 
     public ProposalVersionLocalServiceClpInvoker() {
         _methodName0 = "addProposalVersion";
@@ -143,25 +143,25 @@ public class ProposalVersionLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalVersion"
             };
 
-        _methodName590 = "getBeanIdentifier";
+        _methodName660 = "getBeanIdentifier";
 
-        _methodParameterTypes590 = new String[] {  };
+        _methodParameterTypes660 = new String[] {  };
 
-        _methodName591 = "setBeanIdentifier";
+        _methodName661 = "setBeanIdentifier";
 
-        _methodParameterTypes591 = new String[] { "java.lang.String" };
+        _methodParameterTypes661 = new String[] { "java.lang.String" };
 
-        _methodName596 = "countByProposalId";
+        _methodName666 = "countByProposalId";
 
-        _methodParameterTypes596 = new String[] { "long" };
+        _methodParameterTypes666 = new String[] { "long" };
 
-        _methodName597 = "getByProposalId";
+        _methodName667 = "getByProposalId";
 
-        _methodParameterTypes597 = new String[] { "long", "int", "int" };
+        _methodParameterTypes667 = new String[] { "long", "int", "int" };
 
-        _methodName598 = "getByProposalIdVersion";
+        _methodName668 = "getByProposalIdVersion";
 
-        _methodParameterTypes598 = new String[] { "long", "int" };
+        _methodParameterTypes668 = new String[] { "long", "int" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -253,32 +253,32 @@ public class ProposalVersionLocalServiceClpInvoker {
             return ProposalVersionLocalServiceUtil.updateProposalVersion((com.ext.portlet.model.ProposalVersion) arguments[0]);
         }
 
-        if (_methodName590.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes590, parameterTypes)) {
+        if (_methodName660.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes660, parameterTypes)) {
             return ProposalVersionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName591.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes591, parameterTypes)) {
+        if (_methodName661.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes661, parameterTypes)) {
             ProposalVersionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName596.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes596, parameterTypes)) {
+        if (_methodName666.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes666, parameterTypes)) {
             return ProposalVersionLocalServiceUtil.countByProposalId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName597.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes597, parameterTypes)) {
+        if (_methodName667.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes667, parameterTypes)) {
             return ProposalVersionLocalServiceUtil.getByProposalId(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName598.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes598, parameterTypes)) {
+        if (_methodName668.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes668, parameterTypes)) {
             return ProposalVersionLocalServiceUtil.getByProposalIdVersion(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue());
         }

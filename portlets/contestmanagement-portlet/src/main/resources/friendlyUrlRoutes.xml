@@ -9,6 +9,16 @@
     </route>
 
     <route>
+        <pattern>/create2015Tier1Contests</pattern>
+        <generated-parameter name="create2015Tier1Contests">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/create2015Tier2And3Contests</pattern>
+        <generated-parameter name="create2015Tier2And3Contests">true</generated-parameter>
+    </route>
+
+    <route>
         <pattern>/contestId/{contestId}</pattern>
         <generated-parameter name="tab">DESCRIPTION</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
@@ -19,5 +29,25 @@
         <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
     </route>
+
+    <route>
+        <pattern>/manager</pattern>
+        <generated-parameter name="tab">OVERVIEW</generated-parameter>
+        <generated-parameter name="manager">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/manager/tab/{tab}</pattern>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="manager">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/manager/tab/{tab}/elementId/{elementId}</pattern>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="elementId">{elementId}</generated-parameter>
+        <generated-parameter name="manager">true</generated-parameter>
+    </route>
+
 
 </routes>

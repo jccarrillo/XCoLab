@@ -19,14 +19,9 @@
 
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
-	<collab:imageUpload uploadImageDivId="contestImage"/>
-
-		<p>Welcome! This is the contest creation tool, where you can set up and preview the contest before it goes live on the Climate CoLab site.</p>
-		<p>This first tab is where your team enters and edits the content that will be displayed on the contest homepage.</p>
-		<p>Click the tabs above to edit the other elements of the contest. Be sure to click <strong>SAVE changes</strong> before exiting a page, or submitting a comment, or your content may be lost. Once all the contest content is complete and finalized with your team, click <strong>SUBMIT</strong> to send it to the Climate CoLab staff for review before launch.</p>
-		<p>You can use the <strong>Comment</strong> feature below to communicate with your other contest team members or ask questions of the Climate CoLab staff.</p>
-
-	<collab:imageUpload uploadImageDivId="logoImage"/>
+	<collab:imageUpload uploadImageDivId="contestImage" />
+		<p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest team, or your content may be lost.</p>
+	<collab:imageUpload uploadImageDivId="logoImage" keepFormat="true"/>
 	<h2>Homepage content</h2>
 	<form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform" id="editForm" method="post">
 		<div class="reg_errors"><!--  -->
@@ -45,9 +40,10 @@
 					<form:errors cssClass="alert alert-error" path="contestShortName" />
 				</div>
 				<div class="clearfix"><!-- --></div>
-				<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">50</span> characters</div>
+				<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">60</span> characters</div>
 			</div>
 		</div>
+
 
 		<div class="addpropbox">
 			<label>
@@ -72,7 +68,7 @@
 			<label>
                <strong>Contest image</strong>
 			</label>
-			<div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed copyrights attached to the image. <a href="http://climatecolab.org/resources/-/wiki/Main/Launching+the+Contest" target="_blank">For guidance, please click here.</a></div>
+			<div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed copyrights attached to the image.</div>
 
 			<div class="upload contestImageUpload">
 
@@ -115,7 +111,7 @@
 					<form:input path="sponsorLogoId" cssStyle="display: none;" id="logoImageId" />
 				</div>
 
-				<div id="logoImageUploadWidget" class="uploadWidget"><!--  --></div>
+				<div id="logoImageUploadWidget" class="uploadWidget optional"><!--  --></div>
 				<div class="clear"><!--  --></div>
 			</div>
 		</div>
@@ -138,6 +134,23 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="addpropbox">
+            <label>
+                <strong>Email Template URL</strong>
+                <a class="helpTrigger" href="javascript:;"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+            </label>
+            <div class="addprophelp">The corresponding wiki template URL</div>
+            <div class="clearfix"><!--  --></div>
+            <div class="addpropInputContainer">
+                <form:input path="emailTemplateUrl" id="emailTemplateUrl"/>
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="alert alert-error" path="emailTemplateUrl" />
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">50</span> characters</div>
+            </div>
+        </div>
 
 		<div class="addpropbox">
 			<label>

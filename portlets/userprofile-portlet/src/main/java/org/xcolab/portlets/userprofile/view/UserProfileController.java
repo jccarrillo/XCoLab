@@ -1,6 +1,5 @@
 package org.xcolab.portlets.userprofile.view;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.*;
 
@@ -25,14 +24,12 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.SmartValidator;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,16 +47,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
 public class UserProfileController {
 
-    private User loggedInUser = null;
-    private UserProfileWrapper currentUserProfile = null;
-
+    private static final long DEFAULT_COMPANY_ID = 10112L;
     private final static Log _log = LogFactoryUtil.getLog(UserProfileController.class);
 
     @Autowired
@@ -69,23 +62,18 @@ public class UserProfileController {
     public void initUserWrapperBeanBinder(WebDataBinder binder) { binder.setValidator(validator);    }
 
     public UserProfileController() {
-
     }
 
     @RenderMapping
     public String defaultShowUserProfileNotInitializedView(PortletRequest request) throws SystemException, PortalException {
-
         return "showProfileNotInitialized";
-
     }
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
                                      @RequestParam(required = true) String userId
     ) throws SystemException, PortalException {
-
         return showUserProfileOrNotInitialized(request, model, userId);
-
     }
 
     @RequestMapping(params = "page=edit")
@@ -94,22 +82,20 @@ public class UserProfileController {
     ) throws SystemException, PortalException {
 
         try{
-            initUserWrapper(request, model, userId);
-
-            if(currentUserProfile.isInitialized()) {
-                model.addAttribute("userBean", currentUserProfile.getUserBean());
-                model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(),request));
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            populateUserWrapper(currentUserProfile, model);
+            if (currentUserProfile.isViewingOwnProfile()) {
                 if (currentUserProfile.isViewingOwnProfile()) {
-                    return "editUserProfile";
+                    model.addAttribute("newsletterBean",
+                            new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
                 }
+                return "editUserProfile";
             }
         } catch(Exception e){
             _log.warn("Could not create user profile for " + userId);
+            return "showProfileNotInitialized";
         }
-
-        return "showProfileNotInitialized";
-
+        return "showUserProfile";
     }
 
     @RequestMapping(params = "page=subscriptions")
@@ -119,18 +105,14 @@ public class UserProfileController {
     ) throws SystemException, PortalException {
 
         try{
-            initUserWrapper(request, model, userId);
-
-            if(currentUserProfile.isInitialized()) {
-                currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
-                model.addAttribute("userBean", currentUserProfile.getUserBean());
-                    return "showUserSubscriptions";
-            }
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            populateUserWrapper(currentUserProfile, model);
+            currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
+            return "showUserSubscriptions";
         } catch(Exception e){
             _log.warn("Could not create user profile for " + userId);
+            return "showProfileNotInitialized";
         }
-
-        return "showProfileNotInitialized";
 
     }
 
@@ -141,39 +123,35 @@ public class UserProfileController {
     ) throws SystemException, PortalException {
 
         try{
-            initUserWrapper(request, model, userId);
-            if(currentUserProfile.isInitialized()) {
-                if(typeFilter != null){
-                    currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
-                }
-                model.addAttribute("userBean", currentUserProfile.getUserBean());
-                model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
-
-                if (currentUserProfile.isViewingOwnProfile()) {
-                    return "showUserSubscriptionsManage";
-                }
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            populateUserWrapper(currentUserProfile, model);
+            if(typeFilter != null){
+                currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
+            }
+            model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
+            if (currentUserProfile.isViewingOwnProfile()) {
+                return "showUserSubscriptionsManage";
             }
         } catch(Exception e){
             _log.warn("Could not create user profile for " + userId);
+            return "showProfileNotInitialized";
         }
-
-        return "showProfileNotInitialized";
-
+        return "showUserProfile";
     }
 
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
                                       @RequestParam(required = true) String paginationAction
-    ) throws IOException {
+    ) throws Exception {
 
         Integer paginationPageId = 1;
+        UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
         switch(paginationAction){
             case "First": paginationPageId = 1; break;
             case "<Previous": paginationPageId = currentUserProfile.getSubscriptionsPaginationPageId() - 1; break;
             case "Next>": paginationPageId = currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
             case "Last": paginationPageId = currentUserProfile.getSubscriptionsPaginationPageMax(); break;
         }
-        //response.setRenderParameter("paginationId", paginationPageId.toString());
         response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString()+
                 "/page/subscriptions/"+paginationPageId.toString());
     }
@@ -183,7 +161,6 @@ public class UserProfileController {
                                       @RequestParam(required = false) boolean emailError,
                                       @RequestParam(required = false) boolean passwordError,
                                       @RequestParam(required = true) String userId) {
-
         model.addAttribute("updateError", true);
         if(emailError) {
             model.addAttribute("emailError", true);
@@ -191,25 +168,19 @@ public class UserProfileController {
         if(passwordError){
             model.addAttribute("passwordError", true);
         }
-
         try {
-            initUserWrapper(request, model, userId);
-
-            if (currentUserProfile != null) {
-                if (currentUserProfile.isViewingOwnProfile()) {
-                    model.addAttribute("newsletterBean",
-                            new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(),request));
-                    return "editUserProfile";
-                } else {
-                    return "showUserProfile";
-                }
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            if (currentUserProfile.isViewingOwnProfile()) {
+                model.addAttribute("newsletterBean",
+                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
+                return "editUserProfile";
             }
-
         } catch (Exception e) {
             _log.warn("Could not create user profile for " + userId);
+            return "showProfileNotInitialized";
         }
 
-        return "showProfileNotInitialized";
+        return "showUserProfile";
     }
 
     @RequestMapping(params = "updateSuccess=true")
@@ -217,16 +188,12 @@ public class UserProfileController {
                                      @RequestParam(required = true) String userId) {
 
         model.addAttribute("updateSuccess", true);
-
         try{
-            initUserWrapper(request, model, userId);
+            populateUserWrapper(new UserProfileWrapper(request.getRemoteUser(), request), model);
         } catch(Exception e){
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
-
-        //response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString());
-
         return "showUserProfile";
     }
 
@@ -241,8 +208,19 @@ public class UserProfileController {
         boolean validationError = false;
         boolean eMailChanged = false;
 
+        Long loggedInUserId = Long.parseLong(request.getRemoteUser());
+        if(!loggedInUserId.equals(updatedUserBean.getUserId())){
+            response.sendRedirect("/web/guest/member/-/member/userId/" + updatedUserBean.getUserId());
+        }
+        try {
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            model.addAttribute("currentUserProfile", currentUserProfile);
+            model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+            model.addAttribute("messageBean", new MessageBean());
+            model.addAttribute("userBean", updatedUserBean);
+
         if (updatedUserBean.getPassword() != null  && updatedUserBean.getPassword().trim().length() > 0) {
-            if(isPasswordMatchingExistingPassword(updatedUserBean.getCurrentPassword().trim())){
+            if(isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())){
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
@@ -316,7 +294,7 @@ public class UserProfileController {
         }
 
         try {
-            changedUserPart = changedUserPart | updateUserProfile(updatedUserBean);
+            changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
         } catch(Exception e){
             _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser().getUserId());
             _log.warn(e);
@@ -350,8 +328,8 @@ public class UserProfileController {
             if (eMailChanged) {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
                 try {
-                    sendUpatedEmail(currentUserProfile.getUser());
-                } catch(AddressException | MailEngineException e){
+                    sendUpdatedEmail(currentUserProfile.getUser());
+                } catch(Exception e){
                     _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile.getUser().getUserId());
                     _log.warn(e);
                 }
@@ -362,45 +340,31 @@ public class UserProfileController {
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);
-
-    }
-
-    private void initUserWrapper(PortletRequest request, Model model, String userId
-    ) throws PortalException, SystemException {
-
-        loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
-        currentUserProfile = null;
-
-        if (userId != null) {
-
-            try {
-                currentUserProfile = new UserProfileWrapper(Long.parseLong(userId), request);
-                model.addAttribute("currentUser", currentUserProfile);
-                model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
-                model.addAttribute("messageBean", new MessageBean());
-
-            } catch (NumberFormatException e) {
-                _log.warn("Can't parse user id: " + userId);
-            }
+        } catch(Exception e){
+            _log.warn("Could not update user profile for " + loggedInUserId);
+            response.sendRedirect("/web/guest/member/-/member/userId/" + loggedInUserId);
         }
     }
+
+    private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model){
+        model.addAttribute("currentUserProfile", currentUserProfile);
+        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+        model.addAttribute("userBean", currentUserProfile.getUserBean());
+        model.addAttribute("messageBean", new MessageBean());
+    }
+
     private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId
     ) throws PortalException, SystemException {
         try {
-            initUserWrapper(request, model, userId);
-
-            if (currentUserProfile.isInitialized()) {
-                model.addAttribute("userBean", currentUserProfile.getUserBean());
-                return "showUserProfile";
-            }
+            populateUserWrapper(new UserProfileWrapper(userId,request) ,model);
+            return "showUserProfile";
         } catch (Exception e) {
             _log.warn("Could not create user profile for " + userId);
         }
-
         return "showProfileNotInitialized";
     }
 
-    private boolean  updateUserProfile(UserBean updatedUserBean) throws Exception {
+    private boolean  updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) throws Exception {
 
         boolean changedDetails = false;
 
@@ -410,24 +374,25 @@ public class UserProfileController {
             changedDetails = true;
         }
 
-        String existingBio = ExpandoValueLocalServiceUtil.getData(
+        String existingBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
                 User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.BIO, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
+
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
-            ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
+            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,  User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.BIO,
                     currentUserProfile.getUser().getUserId(), updatedUserBean.getShortBio());
             changedDetails = true;
         }
 
-        String existingCountry = ExpandoValueLocalServiceUtil.getData(
+        String existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
                 User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
         if(!existingCountry.isEmpty())
             existingCountry = Helper.getCodeForCounty(existingCountry);
 
         if (!existingCountry.equals(updatedUserBean.getCountry())) {
-            ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
+            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
                     currentUserProfile.getUser().getUserId(), Helper.getCountryForCode(updatedUserBean.getCountry()));
             changedDetails = true;
@@ -483,7 +448,7 @@ public class UserProfileController {
 
     }
 
-    private boolean isPasswordMatchingExistingPassword(String password){
+    private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password){
         boolean existing = false;
         try {
             final String existingPassword = currentUserProfile.getUser().getPassword();
@@ -495,7 +460,7 @@ public class UserProfileController {
         return existing;
     }
 
-    private void sendUpatedEmail(User user) throws AddressException, MailEngineException {
+    private void sendUpdatedEmail(User user) throws Exception{
         String messageSubject = "Your email address on the Climate CoLab has been updated";
         String messageBody = "Dear " + user.getFirstName() + ",\n" +
                 "\n" +
@@ -509,13 +474,11 @@ public class UserProfileController {
                 "Thank you for engaging on the Climate CoLab!\n";
 
         InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
-
         InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
 
         InternetAddress replyTo[] = {addressFrom};
-
-        MailEngine.send(addressFrom, addressTo, null, null, null,
-                messageSubject, messageBody, false, replyTo, null, null);
+            MailEngine.send(addressFrom, addressTo, null, null, null,
+                    messageSubject, messageBody, false, replyTo, null, null);
     }
 
 

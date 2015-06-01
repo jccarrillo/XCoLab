@@ -41,18 +41,18 @@ public class PointsLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName590;
-    private String[] _methodParameterTypes590;
-    private String _methodName591;
-    private String[] _methodParameterTypes591;
-    private String _methodName596;
-    private String[] _methodParameterTypes596;
-    private String _methodName597;
-    private String[] _methodParameterTypes597;
-    private String _methodName598;
-    private String[] _methodParameterTypes598;
-    private String _methodName599;
-    private String[] _methodParameterTypes599;
+    private String _methodName660;
+    private String[] _methodParameterTypes660;
+    private String _methodName661;
+    private String[] _methodParameterTypes661;
+    private String _methodName666;
+    private String[] _methodParameterTypes666;
+    private String _methodName667;
+    private String[] _methodParameterTypes667;
+    private String _methodName668;
+    private String[] _methodParameterTypes668;
+    private String _methodName669;
+    private String[] _methodParameterTypes669;
 
     public PointsLocalServiceClpInvoker() {
         _methodName0 = "addPoints";
@@ -131,29 +131,29 @@ public class PointsLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.Points" };
 
-        _methodName590 = "getBeanIdentifier";
+        _methodName660 = "getBeanIdentifier";
 
-        _methodParameterTypes590 = new String[] {  };
+        _methodParameterTypes660 = new String[] {  };
 
-        _methodName591 = "setBeanIdentifier";
+        _methodName661 = "setBeanIdentifier";
 
-        _methodParameterTypes591 = new String[] { "java.lang.String" };
+        _methodParameterTypes661 = new String[] { "java.lang.String" };
 
-        _methodName596 = "getUserMaterializedPoints";
+        _methodName666 = "getUserMaterializedPoints";
 
-        _methodParameterTypes596 = new String[] { "long" };
+        _methodParameterTypes666 = new String[] { "long" };
 
-        _methodName597 = "getUserHypotheticalPoints";
+        _methodName667 = "getUserHypotheticalPoints";
 
-        _methodParameterTypes597 = new String[] { "long" };
+        _methodParameterTypes667 = new String[] { "long" };
 
-        _methodName598 = "distributePoints";
+        _methodName668 = "distributePoints";
 
-        _methodParameterTypes598 = new String[] { "long" };
+        _methodParameterTypes668 = new String[] { "long" };
 
-        _methodName599 = "previewMaterializedPoints";
+        _methodName669 = "previewMaterializedPoints";
 
-        _methodParameterTypes599 = new String[] { "long" };
+        _methodParameterTypes669 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -245,37 +245,37 @@ public class PointsLocalServiceClpInvoker {
             return PointsLocalServiceUtil.updatePoints((com.ext.portlet.model.Points) arguments[0]);
         }
 
-        if (_methodName590.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes590, parameterTypes)) {
+        if (_methodName660.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes660, parameterTypes)) {
             return PointsLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName591.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes591, parameterTypes)) {
+        if (_methodName661.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes661, parameterTypes)) {
             PointsLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName596.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes596, parameterTypes)) {
+        if (_methodName666.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes666, parameterTypes)) {
             return PointsLocalServiceUtil.getUserMaterializedPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName597.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes597, parameterTypes)) {
+        if (_methodName667.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes667, parameterTypes)) {
             return PointsLocalServiceUtil.getUserHypotheticalPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName598.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes598, parameterTypes)) {
+        if (_methodName668.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes668, parameterTypes)) {
             PointsLocalServiceUtil.distributePoints(((Long) arguments[0]).longValue());
 
             return null;
         }
 
-        if (_methodName599.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes599, parameterTypes)) {
+        if (_methodName669.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes669, parameterTypes)) {
             return PointsLocalServiceUtil.previewMaterializedPoints(((Long) arguments[0]).longValue());
         }
 

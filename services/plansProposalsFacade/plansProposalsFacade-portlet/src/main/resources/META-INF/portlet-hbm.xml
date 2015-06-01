@@ -25,6 +25,12 @@
 	<import class="com.ext.portlet.model.EmailList" />
 	<import class="com.ext.portlet.model.FocusArea" />
 	<import class="com.ext.portlet.model.FocusAreaOntologyTerm" />
+	<import class="com.ext.portlet.model.ImpactDefaultSeries" />
+	<import class="com.ext.portlet.model.ImpactDefaultSeriesData" />
+	<import class="com.ext.portlet.model.ImpactIteration" />
+	<import class="com.ext.portlet.model.ImpactTemplateFocusAreaList" />
+	<import class="com.ext.portlet.model.ImpactTemplateMaxFocusArea" />
+	<import class="com.ext.portlet.model.ImpactTemplateSeries" />
 	<import class="com.ext.portlet.model.LandingPage" />
 	<import class="com.ext.portlet.model.LoginLog" />
 	<import class="com.ext.portlet.model.Message" />
@@ -92,9 +98,14 @@
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
+	<import class="com.ext.portlet.model.Role_" />
+	<import class="com.ext.portlet.model.RolesCategory" />
+	<import class="com.ext.portlet.model.SocialActivity" />
 	<import class="com.ext.portlet.model.StaffMember" />
 	<import class="com.ext.portlet.model.TrackedVisit" />
 	<import class="com.ext.portlet.model.TrackedVisitor2User" />
+	<import class="com.ext.portlet.model.User_" />
+	<import class="com.ext.portlet.model.Users_Roles" />
 	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
 		<id name="pk" type="long">
@@ -226,6 +237,10 @@
 		<property name="points" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="defaultParentPointType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="pointDistributionStrategy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="emailTemplateUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="show_in_tile_view" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="show_in_list_view" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="show_in_outline_view" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestDebateImpl" table="xcolab_ContestDebate">
 		<cache usage="read-write" />
@@ -404,6 +419,54 @@
 			<key-property name="ontologyTermId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 		<property name="order" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="order_" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactDefaultSeriesImpl" table="xcolab_ImpactDefaultSeries">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesPK">
+			<key-property name="seriesId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		</composite-id>
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="editable" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactDefaultSeriesDataImpl" table="xcolab_ImpactDefaultSeriesData">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK">
+			<key-property name="seriesId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		</composite-id>
+		<property name="value" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactIterationImpl" table="xcolab_ImpactIteration">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactIterationPK">
+			<key-property name="iterationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		</composite-id>
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactTemplateFocusAreaListImpl" table="xcolab_ImpactTemplateFocusAreaList">
+		<cache usage="read-write" />
+		<id name="focusAreaListId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactTemplateMaxFocusAreaImpl" table="xcolab_ImpactTemplateMaxFocusArea">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK">
+			<key-property name="focusAreaListId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactTemplateSeriesImpl" table="xcolab_ImpactTemplateSeries">
+		<cache usage="read-write" />
+		<id name="seriesId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="iterationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.LandingPageImpl" table="xcolab_LandingPage">
 		<cache usage="read-write" />
@@ -904,6 +967,8 @@
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="baseTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="impactSeriesTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="focusAreaListTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PlanTemplateSectionImpl" table="xcolab_PlanTemplateSection">
 		<cache usage="read-write" />
@@ -1094,6 +1159,7 @@
 		<property name="label" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="judgeType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="isActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingValueImpl" table="xcolab_ProposalRatingValue">
 		<cache usage="read-write" />
@@ -1133,6 +1199,28 @@
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.Role_Impl" table="xcolab_Role_">
+		<cache usage="read-write" />
+		<id name="roleId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.RolesCategoryImpl" table="xcolab_RolesCategory">
+		<cache usage="read-write" />
+		<id name="roleId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="categoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="roleOrdinal" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.SocialActivityImpl" table="xcolab_SocialActivity">
+		<cache usage="read-write" />
+		<id name="activityId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
 		<cache usage="read-write" />
 		<id name="id" column="id_" type="long">
@@ -1171,5 +1259,20 @@
 		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.User_Impl" table="xcolab_User_">
+		<cache usage="read-write" />
+		<id name="userId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="screenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.Users_RolesImpl" table="xcolab_Users_Roles">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.Users_RolesPK">
+			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
 	</class>
 </hibernate-mapping>

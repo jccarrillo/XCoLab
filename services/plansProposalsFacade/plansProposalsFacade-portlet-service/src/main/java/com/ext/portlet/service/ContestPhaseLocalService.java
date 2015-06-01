@@ -296,8 +296,18 @@ public interface ContestPhaseLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleId(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndContest(
         long contestScheduleId, long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndPhaseType(
+        long contestScheduleId, long contestPhaseType)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -321,10 +331,6 @@ public interface ContestPhaseLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public void promoteProposal(long proposalId, long nextPhaseId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
     public void promoteProposal(long proposalId, long nextPhaseId,
         long currentPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -339,6 +345,16 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     public void autoPromoteProposals()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Creates a new contest phase object by copying all attributes of the original contest phase
+    *
+    * @param originalPhase     The contest phase to copy
+    * @return
+    */
+    public com.ext.portlet.model.ContestPhase createFromContestPhase(
+        com.ext.portlet.model.ContestPhase originalPhase)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     public void forcePromotionOfProposalInPhase(
         com.ext.portlet.model.Proposal p,

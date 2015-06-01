@@ -193,6 +193,11 @@
     	<finder return-type="Collection" name="ContestPhaseId">
     		<finder-column name="contestPhaseId" />
     	</finder>
+
+		<finder return-type="Collection" name="ContestPhaseIdAndProposalId">
+			<finder-column name="contestPhaseId" />
+			<finder-column name="proposalId" />
+		</finder>
     </entity>
     
     <entity name="ProposalContestPhaseAttributeType" local-service="true" >
@@ -216,6 +221,7 @@
         <column name="label" type="String" />
         <column name="description" type="String" />
         <column name="judgeType" type="int" />
+        <column name="isActive" type="boolean" />
         <column name="proposalRatingValues" type="Collection" entity="ProposalRatingValue" mapping-key="ratingTypeId"/>
     </entity>
     <entity name="ProposalRatingValue" local-service="true">
@@ -228,6 +234,7 @@
         <column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
     </entity>
 
+	<!-- Proposal impact -->
 
 
 </service-builder>

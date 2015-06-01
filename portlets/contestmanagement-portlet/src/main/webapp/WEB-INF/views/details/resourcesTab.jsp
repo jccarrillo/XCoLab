@@ -20,10 +20,8 @@
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
 
-		<p>The resources page is what visitors see when they click either “See more details” or the Resources button on the contest homepage.  It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
-		<p>The sections below provide an example of how to format this page; contest teams can add new sections and/or structure it differently.</p>
-		<p>Fellows will have access to editing this page after the contest is launched.  Images and photos can be added at that point.</p>
-		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1.</a> <a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
+		<p>The resources page is what visitors see when they click either "Read more" or the Resources button on the contest homepage. It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
+		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1. </a><a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
 
 	<h2>Resource page content</h2>
 		<div id="resourcesSections">
@@ -108,6 +106,12 @@
 
 	<script type="text/javascript">
 		<![CDATA[
+
+		jQuery('document').ready(function(){
+			bindAddSectionClick();
+			bindDeleteClickEvents(deleteSection);
+		});
+
 		function getNumberOfSections(){
 			return parseInt(document.getElementById("numberOfSections").value);
 		}
@@ -176,27 +180,29 @@
 		}
 
 		function deleteSection(section){
-			var newNumberOfSections = getNumberOfSections() - 1;
-			setNumberOfSections(newNumberOfSections);
-			jQuery(section).closest(".addpropbox").remove();
+			if(confirm("Do you want to remove this section ?")) {
+				var newNumberOfSections = getNumberOfSections() - 1;
+				setNumberOfSections(newNumberOfSections);
+				getClosest(section, "tr").remove();
+			}
 		}
 
-		jQuery(function() {
+		function bindDeleteClickEvents(){
+			[].forEach.call(document.getElementsByClassName('deleteIcon'), function(deletableSectionElements) {
+				deletableSectionElements.addEventListener('click', deleteSection, false);
+			});
+		}
+
+		function bindAddSectionClick(){
 			var initialNumberOfSections = getNumberOfSections();
 			var dummySectionId = initialNumberOfSections;
-
-			$('#addSectionButton').click(function(){
+			var addSectionButtonElement = document.getElementById("addSectionButton");
+			addSectionButtonElement.addEventListener("click", function(event) {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(dummySectionId, numberOfSections + 1);
-			})
-
-			jQuery('.deletable').delegate(".deleteIcon", "click", function() {
-				if(confirm("Do you want to remove this section ?")) {
-					deleteSection(this);
-				}
 			});
+		}
 
-		});
 		]]>
 	</script>
 

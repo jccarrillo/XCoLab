@@ -4,11 +4,8 @@ import com.ext.portlet.NoSuchContestDiscussionException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.ContestDiscussionLocalService;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.persistence.ContestDiscussionUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.interfaces.TabContext;
@@ -48,6 +45,10 @@ public class TabWrapper {
 
     public String getDisplayName() {
         return tab.getDisplayName();
+    }
+
+    public String getElementType()  {
+        return tab.getElementType();
     }
 
     public boolean getIsDefault() {

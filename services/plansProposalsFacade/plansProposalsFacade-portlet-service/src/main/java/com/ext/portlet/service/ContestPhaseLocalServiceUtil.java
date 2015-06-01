@@ -334,11 +334,26 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getPhasesForContest(contestPK);
     }
 
-    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleId(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPhasesForContestScheduleId(contestScheduleId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndContest(
         long contestScheduleId, long contestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getPhasesForContestSchedule(contestScheduleId, contestPK);
+                   .getPhasesForContestScheduleIdAndContest(contestScheduleId,
+            contestPK);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndPhaseType(
+        long contestScheduleId, long contestPhaseType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getPhasesForContestScheduleIdAndPhaseType(contestScheduleId,
+            contestPhaseType);
     }
 
     public static com.ext.portlet.model.ContestPhase getActivePhaseForContest(
@@ -365,12 +380,6 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getName(contestPhase);
     }
 
-    public static void promoteProposal(long proposalId, long nextPhaseId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().promoteProposal(proposalId, nextPhaseId);
-    }
-
     public static void promoteProposal(long proposalId, long nextPhaseId,
         long currentPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -388,6 +397,18 @@ public class ContestPhaseLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().autoPromoteProposals();
+    }
+
+    /**
+    * Creates a new contest phase object by copying all attributes of the original contest phase
+    *
+    * @param originalPhase     The contest phase to copy
+    * @return
+    */
+    public static com.ext.portlet.model.ContestPhase createFromContestPhase(
+        com.ext.portlet.model.ContestPhase originalPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().createFromContestPhase(originalPhase);
     }
 
     public static void forcePromotionOfProposalInPhase(

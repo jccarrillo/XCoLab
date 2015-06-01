@@ -641,6 +641,41 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @param publishActivity
+    * @throws SystemException
+    * @throws PortalException
+    */
+    @Override
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.removeAttribute(authorId, attributeToDelete,
+            publishActivity);
+    }
+
+    /**
+    * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Override
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.removeAttribute(authorId, attributeToDelete);
+    }
+
+    /**
     * <p>Returns a list of all proposal version descriptors.</p>
     *
     * @param proposalId id of a proposal
@@ -1329,15 +1364,18 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * Returns list of proposals referenced by given proposal
     *
-    * @param proposalId      The proposal for which subproposals should be returned
+    * @param proposalId                        The proposal for which subproposals should be returned
+    * @param includeProposalsInSameContest     Specifies whether linked proposals in the same contest as the passed proposal
+    should be included in the result or not
     * @return collection of referenced proposals
     */
     @Override
     public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
-        long proposalId)
+        long proposalId, boolean includeProposalsInSameContest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalLocalService.getSubproposals(proposalId);
+        return _proposalLocalService.getSubproposals(proposalId,
+            includeProposalsInSameContest);
     }
 
     /**
@@ -1370,6 +1408,36 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getLatestProposalContest(proposalId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getImpactProposalAttributes(proposal);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getImpactProposalAttributes(proposal,
+            focusArea);
+    }
+
+    /**
+    * Returns all focus areas, for which entered proposal impact data is available
+    *
+    * @param proposal
+    * @return
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getImpactProposalFocusAreas(proposal);
     }
 
     /**

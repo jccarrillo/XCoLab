@@ -31,10 +31,11 @@ public enum ProposalTab {
                 }
                 private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
     }
-            , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
+            , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero), // TODO might need to change this
+    IMPACT("Impact", ProposalTabCanAccessAlgorithm.impactViewAccess, ProposalTabCanAccessAlgorithm.impactEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
     TEAM("Contributors", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),
     COMMENTS("Comments", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
-    DISCUSSION("Evaluation", ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.discussionCommentsCount),
+    DISCUSSION("Evaluation", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.discussionCommentsCount),
     ADVANCING("Judging Decision",ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     SCREENING("Screening", ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),

@@ -37,7 +37,46 @@
         <div class="fixed-position-container">
             <div class="fixed-position-inner-relative">
                 <div class="description">
-                    <p>${contest.contestDescription }</p>
+                    <p>${contest.contestDescription }
+                        <c:if test="${not empty contest.resourcesUrl and contest.contestPK gt 1301102}">
+                            <a href="${contest.resourcesUrl}" target="_blank" >Read more ...</a>
+                        </c:if>
+                    </p>
+
+                    <c:if test="${contest.showSubContests}">
+                    <table>
+                        <tr>
+                            <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                <div class="subcontests">
+                                    <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
+                                    <ul>
+                                        <c:forEach items="${contest.subContests}" var="subContest">
+                                            <li>
+                                        <span>
+                                        <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
+                                        </span>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </c:if>
+
+                    <c:if test="${contest.showParentContest}">
+                        <table>
+                            <tr>
+                                <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                    <div class="subcontests">
+                                        <span class="title">Parent contest: </span>
+                                        <a href="/web/guest/plans/-/plans/contestId/${contest.parentContest.contestPK}">${contest.parentContest.contestShortName}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </c:if>
+
                     <c:if test="${contest.hasFocusArea }">
                         <table style="width: 100%; table-layout: fixed;">
                             <tr>
@@ -127,6 +166,8 @@
                     <span class="clearfix"></span>
                     <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
                     <span class="clearfix"></span>
+                    <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <span class="clearfix"></span>
                 </div>
             </div>
         </div>
@@ -168,7 +209,7 @@
                         <div>
                             <c:if test="${not empty contest.resourcesUrl}">
                             	<div class="button-wrapper">
-                                	<a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
+                                	<a class="detailbutton" href="${contest.resourcesUrl}" >Resources</a>
                                 </div>
                             </c:if>
                             <div class="button-wrapper">

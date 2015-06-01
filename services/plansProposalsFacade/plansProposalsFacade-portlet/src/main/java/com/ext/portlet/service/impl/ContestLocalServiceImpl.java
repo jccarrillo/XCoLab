@@ -2,18 +2,15 @@ package com.ext.portlet.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.ext.portlet.model.ImpactIteration;
+import com.ext.portlet.model.ImpactTemplateFocusAreaList;
+import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
+import com.ext.portlet.model.ImpactTemplateSeries;
+import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
+import com.ext.portlet.service.persistence.ImpactTemplateSeriesUtil;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
@@ -49,6 +46,7 @@ import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
@@ -95,6 +93,8 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 
 import edu.mit.cci.roma.client.Simulation;
 
@@ -120,6 +120,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestLocalServiceUtil} to access the contest local service.
      */
 
+    public static final List<Long> ANY_TERM_IDS = Arrays.asList(1L,2L,3L, 1300601L);
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
     private Random rand = new Random();
 
@@ -603,10 +604,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
+
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-            if (o.getParentId() == 0) i.remove();
+
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
+
         }
         Long[][] terms = new Long[ontologyTerms.size()][];
         // get all child elements and add id's to array
@@ -698,7 +702,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
         // Vote is only possible in Winner Selection phase
         if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId()) {
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId()) {
             return;
         }
         
@@ -1056,5 +1061,76 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
         }
         return null;
+    }
+
+    // Proposal impact implementation
+
+    public ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) throws SystemException, PortalException {
+        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
+        ImpactTemplateSeries impactTemplateSeries = ImpactTemplateSeriesUtil.findByPrimaryKey(planTemplate.getImpactSeriesTemplateId());
+
+        return impactTemplateSeries;
+    }
+
+    public List<ImpactIteration> getContestImpactIterations(Contest contest) throws PortalException, SystemException {
+        ImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
+        return impactIterationPersistence.findByIterationId(impactSeries.getIterationId());
+    }
+
+    public ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) throws SystemException, PortalException {
+        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
+        return ImpactTemplateFocusAreaListLocalServiceUtil.getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
+    }
+
+    public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) throws PortalException, SystemException {
+        ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
+        return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
+    }
+
+
+    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
+
+        DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
+            DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                    .add(PropertyFactoryUtil.forName("contestTier").eq(contestTier))
+                    .add(PropertyFactoryUtil.forName("focusAreaId").in(focusAreaOntologyTermIds));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
+    }
+
+    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws Exception{
+
+        DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
+                DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("contestScheduleId").eq(contestScheduleId))
+                        .add(PropertyFactoryUtil.forName("ContestPK").ne(0L));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
+    }
+
+    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws Exception{
+
+        DynamicQuery queryContestsByPlanTemplateId =
+                DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("planTemplateId").eq(planTemplateId))
+                        .add(PropertyFactoryUtil.forName("ContestPK").ne(0L));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByPlanTemplateId);
+    }
+
+
+    public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId) throws Exception{
+        long focusAreaId = contest.getFocusAreaId();
+        long contestTier =  contest.getContestTier();
+        long lowerContestTier = contestTier - 1;
+
+        if(lowerContestTier < 1) {
+            new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
+        }
+
+        List<Long> focusAreaOntologyTermIds =
+                FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);
+
+        return getContestsByTierLevelAndOntologyTermIds(lowerContestTier, focusAreaOntologyTermIds);
     }
 }

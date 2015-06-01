@@ -758,6 +758,67 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getPointsAccessibleForActivePhaseOfContest(contest);
     }
 
+    @Override
+    public com.ext.portlet.model.ImpactTemplateSeries getContestImpactTemplateSeries(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestImpactTemplateSeries(contest);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactIteration> getContestImpactIterations(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestImpactIterations(contest);
+    }
+
+    @Override
+    public com.ext.portlet.model.ImpactTemplateFocusAreaList getContestImpactFocusAreaList(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestImpactFocusAreaList(contest);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestImpactFocusAreas(contest);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
+        java.lang.Long contestTier,
+        java.util.List<java.lang.Long> focusAreaOntologyTermIds)
+        throws java.lang.Exception {
+        return _contestLocalService.getContestsByTierLevelAndOntologyTermIds(contestTier,
+            focusAreaOntologyTermIds);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
+        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        return _contestLocalService.getContestsByContestScheduleId(contestScheduleId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
+        java.lang.Long planTemplateId) throws java.lang.Exception {
+        return _contestLocalService.getContestsByPlanTemplateId(planTemplateId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
+        com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
+        throws java.lang.Exception {
+        return _contestLocalService.getSubContestsByOntologySpaceId(contest,
+            ontologySpaceId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

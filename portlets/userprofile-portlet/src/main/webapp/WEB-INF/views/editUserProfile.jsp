@@ -32,8 +32,7 @@
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
 
-
-	<form style="margin-top: 20px;" action="/userprofile-portlet/fileUploadServlet" method="post"
+	<form style="margin-top: 20px;" action="/fileUpload" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
 		<input type="file" name="file" id="portraitUploadInput" />
 	</form>
@@ -48,6 +47,7 @@
 	<form:form autocomplete="off" id="updateUserProfileForm"
 			   action="${updateUserProfileForm}" commandName="userBean" method="post">
 		<div id="main" class="userprofile">
+			<form:hidden path="userId"/>
 			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-error" />
 
@@ -110,7 +110,7 @@
 							<th class="b">Member Since</th>
 							<td class="l">
 								&#160;
-								<fmt:formatDate value="${currentUser.joinDate}" type="date" dateStyle="medium" timeZone="America/New_York" />
+								<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="medium" timeZone="America/New_York" />
 							</td>
 						</tr>
 						-->
@@ -207,7 +207,7 @@
 				<div class="blue-button">
 					<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
 				</div>
-				<div class="blue-button"><a href="/web/guest/member/-/member/userId/${currentUser.userId}">Cancel</a></div>
+				<div class="blue-button"><a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a></div>
 			</div>
 		</div> <!-- /main -->
 
@@ -282,7 +282,7 @@
 				<tr class="colabRow">
 					<td>
 						<c:choose>
-							<c:when test="${currentUser.hasFacebookId}">
+							<c:when test="${currentUserProfile.hasFacebookId}">
 								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
 									   value="true" checked="checked" onClick="unlinkFacebookSSO();" />
 							</c:when>
@@ -300,7 +300,7 @@
 				<tr class="colabRow">
 					<td>
 						<c:choose>
-							<c:when test="${currentUser.hasOpenId}">
+							<c:when test="${currentUserProfile.hasOpenId}">
 								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
 									   value="true" checked="checked" onClick="unlinkGoogleSSO();" />
 							</c:when>

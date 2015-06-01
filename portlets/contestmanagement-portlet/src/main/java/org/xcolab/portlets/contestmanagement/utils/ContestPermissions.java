@@ -106,6 +106,7 @@ public class ContestPermissions implements TabPermissions {
     }
     
     public boolean getCanCreate() {
+        // TODO check who needs this
         if(isUserNotLoggedIn) return false;
         // guests aren't allowed to edit
         if (user.isDefaultUser())

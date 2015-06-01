@@ -8,6 +8,7 @@ import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -24,6 +25,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
+import org.springframework.ui.Model;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
@@ -45,7 +47,7 @@ public class
      *
      */
     private static final long serialVersionUID = 1L;
-
+    private static final long DEFAULT_COMPANY_ID = 10112L;
     private User user = null;
     private UserBean userBean = null;
 
@@ -75,39 +77,27 @@ public class
 
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
-    public UserProfileWrapper(Long userId, PortletRequest request) throws PortalException, SystemException {
+    public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
+        Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
-
-        User user;
-        try {
-            user = UserLocalServiceUtil.getUser(userId);
-            if (user.isActive()) {
-
-                if (loggedInUser != null) {
-                    messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
-
-                    if(loggedInUser.getUserId() == user.getUserId()) {
-                        viewingOwnProfile = true;
-                    }
+        user = UserLocalServiceUtil.getUser(userId);
+        if (user.isActive()) {
+            User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
+            if (loggedInUser != null) {
+                messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
+                if(loggedInUser.getUserId() == user.getUserId()) {
+                    viewingOwnProfile = true;
                 }
-
-                init(user);
             }
-        } catch (SystemException e) {
-            System.out.println("Can't load user with id " + userId);
-        } catch (PortalException e) {
-            System.out.println("Can't load user with id " + userId);
+            init(user);
         }
-
     }
 
     private void init(User user) throws PortalException, SystemException {
         this.user = user;
 
         userBean = new UserBean(user);
-
-         realName = getName(user.getFullName(), user.getScreenName());
+        realName = getName(user.getFullName(), user.getScreenName());
 
         String firstPart = realName.substring(0, realName.length() / 2).trim();
         String secondPart = realName.substring(realName.length() / 2).trim();
@@ -117,8 +107,7 @@ public class
         }
 
         profileWasComplete = profileIsComplete();
-
-        attendsConference = ExpandoValueLocalServiceUtil.getData(User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
+        attendsConference = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
         badges = new BadgeBean(user.getUserId());
 
         List<Role> roles = user.getRoles();
@@ -140,17 +129,17 @@ public class
         if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
-
-
         supportedPlans.clear();
         userActivities.clear();
         userProposals.clear();
         for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
             ProposalSupporter ps = (ProposalSupporter) o;
             try {
+                Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(ps.getProposalId());
                 supportedPlans.add(new SupportedPlanWrapper(ps));
-            } catch (PortalException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                _log.warn("Could not add supported plan with id: " + ps.getProposalId());
+                //e.printStackTrace();
             }
         }
 
@@ -316,5 +305,7 @@ public class
     public List<ProposalWrapper> getProposals() { return userProposals; }
 
     public List<Badge> getBadges() { return badges.getBadges(); }
+
+
 
 }

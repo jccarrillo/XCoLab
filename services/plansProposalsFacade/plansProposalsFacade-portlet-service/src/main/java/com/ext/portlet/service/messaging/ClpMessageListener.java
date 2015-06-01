@@ -47,6 +47,18 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
 import com.ext.portlet.service.FocusAreaServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesDataServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesServiceUtil;
+import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
+import com.ext.portlet.service.ImpactIterationServiceUtil;
+import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateFocusAreaListServiceUtil;
+import com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateMaxFocusAreaServiceUtil;
+import com.ext.portlet.service.ImpactTemplateSeriesLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateSeriesServiceUtil;
 import com.ext.portlet.service.LandingPageLocalServiceUtil;
 import com.ext.portlet.service.LandingPageServiceUtil;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
@@ -181,12 +193,22 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
+import com.ext.portlet.service.Role_LocalServiceUtil;
+import com.ext.portlet.service.Role_ServiceUtil;
+import com.ext.portlet.service.RolesCategoryLocalServiceUtil;
+import com.ext.portlet.service.RolesCategoryServiceUtil;
+import com.ext.portlet.service.SocialActivityLocalServiceUtil;
+import com.ext.portlet.service.SocialActivityServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
 import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
 import com.ext.portlet.service.TrackedVisitServiceUtil;
 import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
 import com.ext.portlet.service.TrackedVisitor2UserServiceUtil;
+import com.ext.portlet.service.User_LocalServiceUtil;
+import com.ext.portlet.service.User_ServiceUtil;
+import com.ext.portlet.service.Users_RolesLocalServiceUtil;
+import com.ext.portlet.service.Users_RolesServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -273,6 +295,24 @@ public class ClpMessageListener extends BaseMessageListener {
             FocusAreaOntologyTermLocalServiceUtil.clearService();
 
             FocusAreaOntologyTermServiceUtil.clearService();
+            ImpactDefaultSeriesLocalServiceUtil.clearService();
+
+            ImpactDefaultSeriesServiceUtil.clearService();
+            ImpactDefaultSeriesDataLocalServiceUtil.clearService();
+
+            ImpactDefaultSeriesDataServiceUtil.clearService();
+            ImpactIterationLocalServiceUtil.clearService();
+
+            ImpactIterationServiceUtil.clearService();
+            ImpactTemplateFocusAreaListLocalServiceUtil.clearService();
+
+            ImpactTemplateFocusAreaListServiceUtil.clearService();
+            ImpactTemplateMaxFocusAreaLocalServiceUtil.clearService();
+
+            ImpactTemplateMaxFocusAreaServiceUtil.clearService();
+            ImpactTemplateSeriesLocalServiceUtil.clearService();
+
+            ImpactTemplateSeriesServiceUtil.clearService();
             LandingPageLocalServiceUtil.clearService();
 
             LandingPageServiceUtil.clearService();
@@ -474,6 +514,15 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
+            Role_LocalServiceUtil.clearService();
+
+            Role_ServiceUtil.clearService();
+            RolesCategoryLocalServiceUtil.clearService();
+
+            RolesCategoryServiceUtil.clearService();
+            SocialActivityLocalServiceUtil.clearService();
+
+            SocialActivityServiceUtil.clearService();
             StaffMemberLocalServiceUtil.clearService();
 
             StaffMemberServiceUtil.clearService();
@@ -483,6 +532,12 @@ public class ClpMessageListener extends BaseMessageListener {
             TrackedVisitor2UserLocalServiceUtil.clearService();
 
             TrackedVisitor2UserServiceUtil.clearService();
+            User_LocalServiceUtil.clearService();
+
+            User_ServiceUtil.clearService();
+            Users_RolesLocalServiceUtil.clearService();
+
+            Users_RolesServiceUtil.clearService();
         }
     }
 }

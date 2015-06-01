@@ -2,13 +2,11 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestLocalService;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -16,6 +14,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.util.List;
 
 interface ProposalTabCanAccessAlgorithm {
     boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request);
@@ -154,6 +154,48 @@ interface ProposalTabCanAccessAlgorithm {
         private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
     };
 
+    public final static ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
 
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+            try {
+                Contest contest = context.getContest(request);
+
+                long ADAPTATION_ONTOLOGY_TERM_ID = 1300355L;
+                long focusAreaId = contest.getFocusAreaId();
+                boolean isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm =
+                        OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
+
+                if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
+                        !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                _log.error("can't check if user is allowed to view impact tab", e);
+            }
+            return false;
+        }
+        private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+    };
+
+    public final static ProposalTabCanAccessAlgorithm impactEditAccess = new ProposalTabCanAccessAlgorithm() {
+
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+            try {
+                Contest contest = context.getContest(request);
+
+                // Only let team members or admins edit impact of Basic contests
+                if ((contest != null && contest.getContestTier() == ContestTier.BASIC.getTierType()) &&
+                        (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
+                    return true;
+                }
+            } catch (SystemException | PortalException e) {
+                _log.error("can't check if user is allowed to edit impact tab", e);
+            }
+            return false;
+        }
+        private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+    };
     
 }

@@ -87,9 +87,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "otherModels", Types.VARCHAR },
             { "points", Types.DOUBLE },
             { "defaultParentPointType", Types.BIGINT },
-            { "pointDistributionStrategy", Types.VARCHAR }
+            { "pointDistributionStrategy", Types.VARCHAR },
+            { "emailTemplateUrl", Types.VARCHAR },
+            { "show_in_tile_view", Types.BOOLEAN },
+            { "show_in_list_view", Types.BOOLEAN },
+            { "show_in_outline_view", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(75) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -170,6 +174,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
+    private String _emailTemplateUrl;
+    private boolean _show_in_tile_view;
+    private boolean _show_in_list_view;
+    private boolean _show_in_outline_view;
     private long _columnBitmask;
     private Contest _escapedModel;
 
@@ -226,6 +234,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setPoints(soapModel.getPoints());
         model.setDefaultParentPointType(soapModel.getDefaultParentPointType());
         model.setPointDistributionStrategy(soapModel.getPointDistributionStrategy());
+        model.setEmailTemplateUrl(soapModel.getEmailTemplateUrl());
+        model.setShow_in_tile_view(soapModel.getShow_in_tile_view());
+        model.setShow_in_list_view(soapModel.getShow_in_list_view());
+        model.setShow_in_outline_view(soapModel.getShow_in_outline_view());
 
         return model;
     }
@@ -323,6 +335,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
             getPointDistributionStrategy());
+        attributes.put("emailTemplateUrl", getEmailTemplateUrl());
+        attributes.put("show_in_tile_view", getShow_in_tile_view());
+        attributes.put("show_in_list_view", getShow_in_list_view());
+        attributes.put("show_in_outline_view", getShow_in_outline_view());
 
         return attributes;
     }
@@ -557,6 +573,33 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (pointDistributionStrategy != null) {
             setPointDistributionStrategy(pointDistributionStrategy);
+        }
+
+        String emailTemplateUrl = (String) attributes.get("emailTemplateUrl");
+
+        if (emailTemplateUrl != null) {
+            setEmailTemplateUrl(emailTemplateUrl);
+        }
+
+        Boolean show_in_tile_view = (Boolean) attributes.get(
+                "show_in_tile_view");
+
+        if (show_in_tile_view != null) {
+            setShow_in_tile_view(show_in_tile_view);
+        }
+
+        Boolean show_in_list_view = (Boolean) attributes.get(
+                "show_in_list_view");
+
+        if (show_in_list_view != null) {
+            setShow_in_list_view(show_in_list_view);
+        }
+
+        Boolean show_in_outline_view = (Boolean) attributes.get(
+                "show_in_outline_view");
+
+        if (show_in_outline_view != null) {
+            setShow_in_outline_view(show_in_outline_view);
         }
     }
 
@@ -1135,6 +1178,69 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         _pointDistributionStrategy = pointDistributionStrategy;
     }
 
+    @JSON
+    @Override
+    public String getEmailTemplateUrl() {
+        if (_emailTemplateUrl == null) {
+            return StringPool.BLANK;
+        } else {
+            return _emailTemplateUrl;
+        }
+    }
+
+    @Override
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        _emailTemplateUrl = emailTemplateUrl;
+    }
+
+    @JSON
+    @Override
+    public boolean getShow_in_tile_view() {
+        return _show_in_tile_view;
+    }
+
+    @Override
+    public boolean isShow_in_tile_view() {
+        return _show_in_tile_view;
+    }
+
+    @Override
+    public void setShow_in_tile_view(boolean show_in_tile_view) {
+        _show_in_tile_view = show_in_tile_view;
+    }
+
+    @JSON
+    @Override
+    public boolean getShow_in_list_view() {
+        return _show_in_list_view;
+    }
+
+    @Override
+    public boolean isShow_in_list_view() {
+        return _show_in_list_view;
+    }
+
+    @Override
+    public void setShow_in_list_view(boolean show_in_list_view) {
+        _show_in_list_view = show_in_list_view;
+    }
+
+    @JSON
+    @Override
+    public boolean getShow_in_outline_view() {
+        return _show_in_outline_view;
+    }
+
+    @Override
+    public boolean isShow_in_outline_view() {
+        return _show_in_outline_view;
+    }
+
+    @Override
+    public void setShow_in_outline_view(boolean show_in_outline_view) {
+        _show_in_outline_view = show_in_outline_view;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -1203,6 +1309,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setPoints(getPoints());
         contestImpl.setDefaultParentPointType(getDefaultParentPointType());
         contestImpl.setPointDistributionStrategy(getPointDistributionStrategy());
+        contestImpl.setEmailTemplateUrl(getEmailTemplateUrl());
+        contestImpl.setShow_in_tile_view(getShow_in_tile_view());
+        contestImpl.setShow_in_list_view(getShow_in_list_view());
+        contestImpl.setShow_in_outline_view(getShow_in_outline_view());
 
         contestImpl.resetOriginalValues();
 
@@ -1472,12 +1582,26 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             contestCacheModel.pointDistributionStrategy = null;
         }
 
+        contestCacheModel.emailTemplateUrl = getEmailTemplateUrl();
+
+        String emailTemplateUrl = contestCacheModel.emailTemplateUrl;
+
+        if ((emailTemplateUrl != null) && (emailTemplateUrl.length() == 0)) {
+            contestCacheModel.emailTemplateUrl = null;
+        }
+
+        contestCacheModel.show_in_tile_view = getShow_in_tile_view();
+
+        contestCacheModel.show_in_list_view = getShow_in_list_view();
+
+        contestCacheModel.show_in_outline_view = getShow_in_outline_view();
+
         return contestCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(75);
+        StringBundler sb = new StringBundler(83);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1553,6 +1677,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getDefaultParentPointType());
         sb.append(", pointDistributionStrategy=");
         sb.append(getPointDistributionStrategy());
+        sb.append(", emailTemplateUrl=");
+        sb.append(getEmailTemplateUrl());
+        sb.append(", show_in_tile_view=");
+        sb.append(getShow_in_tile_view());
+        sb.append(", show_in_list_view=");
+        sb.append(getShow_in_list_view());
+        sb.append(", show_in_outline_view=");
+        sb.append(getShow_in_outline_view());
         sb.append("}");
 
         return sb.toString();
@@ -1560,7 +1692,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(115);
+        StringBundler sb = new StringBundler(127);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1713,6 +1845,22 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>pointDistributionStrategy</column-name><column-value><![CDATA[");
         sb.append(getPointDistributionStrategy());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailTemplateUrl</column-name><column-value><![CDATA[");
+        sb.append(getEmailTemplateUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>show_in_tile_view</column-name><column-value><![CDATA[");
+        sb.append(getShow_in_tile_view());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>show_in_list_view</column-name><column-value><![CDATA[");
+        sb.append(getShow_in_list_view());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>show_in_outline_view</column-name><column-value><![CDATA[");
+        sb.append(getShow_in_outline_view());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

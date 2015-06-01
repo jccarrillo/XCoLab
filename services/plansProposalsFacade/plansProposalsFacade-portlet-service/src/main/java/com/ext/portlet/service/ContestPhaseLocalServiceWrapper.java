@@ -358,11 +358,26 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleId(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhasesForContestScheduleId(contestScheduleId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndContest(
         long contestScheduleId, long contestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhaseLocalService.getPhasesForContestSchedule(contestScheduleId,
+        return _contestPhaseLocalService.getPhasesForContestScheduleIdAndContest(contestScheduleId,
             contestPK);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndPhaseType(
+        long contestScheduleId, long contestPhaseType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhasesForContestScheduleIdAndPhaseType(contestScheduleId,
+            contestPhaseType);
     }
 
     @Override
@@ -393,13 +408,6 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
-    public void promoteProposal(long proposalId, long nextPhaseId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _contestPhaseLocalService.promoteProposal(proposalId, nextPhaseId);
-    }
-
-    @Override
     public void promoteProposal(long proposalId, long nextPhaseId,
         long currentPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -419,6 +427,19 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _contestPhaseLocalService.autoPromoteProposals();
+    }
+
+    /**
+    * Creates a new contest phase object by copying all attributes of the original contest phase
+    *
+    * @param originalPhase     The contest phase to copy
+    * @return
+    */
+    @Override
+    public com.ext.portlet.model.ContestPhase createFromContestPhase(
+        com.ext.portlet.model.ContestPhase originalPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.createFromContestPhase(originalPhase);
     }
 
     @Override
