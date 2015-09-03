@@ -24,7 +24,7 @@ public class OverwriteMailServerConfig extends SimpleAction {
     private Log _log = LogFactoryUtil.getLog(OverwriteMailServerConfig.class);
     private final static String PRODUCTION_SERVER_IP_ADRESS = "18.4.70.53";
     private final static List<String> PRODUCTION_SERVER_NAMES = Arrays.asList("climatecolab.org", "climatecolab.com", "ssm-balaur.mit.edu");
-    private final static Integer[] PRODUCTION_SERVER_PORTS = {18081};
+    private final static List<Integer> PRODUCTION_SERVER_PORTS = Arrays.asList(18081);
     private final static String EMAIL_SENT_FILE_NAME = ".xcolab.sendmails";
 
     /*public OverwriteMailServerConfig() {
@@ -33,9 +33,9 @@ public class OverwriteMailServerConfig extends SimpleAction {
     @Override
     public void run(String[] ids) {
         _log.info("Checking server and overwriting mail server config if this is not the production server!");
-        //boolean isProductionServer = isProductionServerName() && isSendEmailFileAvailable();
-        isProductionServerName();
-        boolean isProductionServer = isSendEmailFileAvailable();
+        boolean isProductionServer = isProductionServerName() && isSendEmailFileAvailable();
+        // TODO remove
+        isProductionServer = isSendEmailFileAvailable();
         if (!isProductionServer) {
             overwriteEmailConfigInDatabase();
         }
@@ -43,18 +43,13 @@ public class OverwriteMailServerConfig extends SimpleAction {
 
     private boolean isProductionServerName() {
         String serverName = PortalUtil.getComputerName();
-        String serverIpAddress = PortalUtil.getComputerAddress();
-        Integer serverPortSecure = PortalUtil.getPortalPort(true);
-        Integer serverPortRegular = PortalUtil.getPortalPort(false);
-        System.out.println("serverIpAddress: " + serverIpAddress + " serverName: " + serverName);
-        _log.error("serverIpAddress: " + serverIpAddress + " serverName: " + serverName);
-        _log.error("serverPortSecure: " + serverPortSecure + " serverPortRegular: " + serverPortRegular);
-        System.out.println("serverPortSecure: " + serverPortSecure + " serverPortRegular: " + serverPortRegular);
-        if (serverIpAddress.equals(PRODUCTION_SERVER_IP_ADRESS)) {
-            return true;
-        } else {
-            return false;
-        }
+        Integer serverPort = PortalUtil.getPortalPort(false);
+        _log.info("Sever info -> serverName: " + serverName + " serverPort: " + serverPort);
+        // TODO remove
+        System.out.println("Sever info -> serverName: " + serverName + " serverPort: " + serverPort);
+        boolean validProductionServer = PRODUCTION_SERVER_NAMES.contains(serverPort);
+        boolean validProductionServerPort = PRODUCTION_SERVER_PORTS.contains(serverPort);
+        return  validProductionServer && validProductionServerPort;
     }
 
     private boolean isSendEmailFileAvailable() {
