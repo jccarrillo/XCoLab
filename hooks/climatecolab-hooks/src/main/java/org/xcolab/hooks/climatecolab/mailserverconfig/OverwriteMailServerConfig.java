@@ -45,9 +45,8 @@ public class OverwriteMailServerConfig extends SimpleAction {
         String serverIpAddress = PortalUtil.getComputerAddress();
         Integer serverPortSecure = PortalUtil.getPortalPort(true);
         Integer serverPortRegular = PortalUtil.getPortalPort(false);
-        System.out.println("serverIpAddress: " + serverIpAddress);
-        System.out.println("serverName: " + serverName);
-        System.out.println("serverPortSecure: " + serverPortSecure + " serverPortRegular: " + serverPortRegular);
+        _log.error("serverIpAddress: " + serverIpAddress + " serverName: " + serverName);
+        _log.error("serverPortSecure: " + serverPortSecure + " serverPortRegular: " + serverPortRegular);
         if (serverIpAddress.equals(PRODUCTION_SERVER_IP_ADRESS)) {
             return true;
         } else {
