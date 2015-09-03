@@ -34,6 +34,7 @@ public class OverwriteMailServerConfig extends SimpleAction {
     public void run(String[] ids) {
         _log.info("Checking server and overwriting mail server config if this is not the production server!");
         //boolean isProductionServer = isProductionServerName() && isSendEmailFileAvailable();
+        isProductionServerName();
         boolean isProductionServer = isSendEmailFileAvailable();
         if (!isProductionServer) {
             overwriteEmailConfigInDatabase();
@@ -45,8 +46,10 @@ public class OverwriteMailServerConfig extends SimpleAction {
         String serverIpAddress = PortalUtil.getComputerAddress();
         Integer serverPortSecure = PortalUtil.getPortalPort(true);
         Integer serverPortRegular = PortalUtil.getPortalPort(false);
+        System.out.println("serverIpAddress: " + serverIpAddress + " serverName: " + serverName);
         _log.error("serverIpAddress: " + serverIpAddress + " serverName: " + serverName);
         _log.error("serverPortSecure: " + serverPortSecure + " serverPortRegular: " + serverPortRegular);
+        System.out.println("serverPortSecure: " + serverPortSecure + " serverPortRegular: " + serverPortRegular);
         if (serverIpAddress.equals(PRODUCTION_SERVER_IP_ADRESS)) {
             return true;
         } else {
