@@ -33,7 +33,8 @@ public class OverwriteMailServerConfig extends SimpleAction {
     @Override
     public void run(String[] ids) {
         _log.info("Checking server and overwriting mail server config if this is not the production server!");
-        boolean isProductionServer = isProductionServerName() && isSendEmailFileAvailable();
+        //boolean isProductionServer = isProductionServerName() && isSendEmailFileAvailable();
+        boolean isProductionServer = isSendEmailFileAvailable();
         if (!isProductionServer) {
             overwriteEmailConfigInDatabase();
         }
