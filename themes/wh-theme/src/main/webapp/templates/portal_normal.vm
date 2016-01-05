@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+#parse ($init)
+#parse( "$full_templates_path/init_theme_variables.vm" )
+
+<html dir="#language ("lang.dir")" xmlns="http://www.w3.org/1999/xhtml"  class="$root_css_class" >
+
+<head>
+	<title>$the_title - $company_name</title>
+
+    <link href="http://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css">
+
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+	
+	<!--
+	<script type="text/javascript" src="$javascript_folder/jquery-ui-1.7.2.custom.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+	 -->
+
+    <script type="text/javascript" src="$javascript_folder/adminOverlayHide.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/errorTracker.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.history.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/moment.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/dateTimeFormatter.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.dynatree.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.cookie.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.jgrowl.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.ddslick.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/spin.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+	$theme.include($top_head_include)
+	
+    <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp&v=$customThemeVersion" media="all"/>
+    <link type="text/css" rel="stylesheet" href="$css_folder/jquery.jgrowl.css?tt=$themeTimestamp&v=$customThemeVersion" media="all"/>
+	
+	<meta property="og:image" content="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
+	<link rel="image_src"  type="image/png"   href="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
+	
+    <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css"/>
+    <link rel="stylesheet" href="$css_folder/style.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/autoSuggest.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/ui.dynatree.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    
+    
+    <!-- cognosis typekit -->
+    <!-- <script type="text/javascript" src="//use.typekit.net/zdq3gry.js"></script> -->
+    
+    #if ($request.serverName == 'localhost') 
+    	<!-- local typekit -->
+		<script type="text/javascript" src="http://use.typekit.com/uvv6okq.js"></script>
+	#else 
+    	<!-- production typekit -->
+    	<script type="text/javascript" src="http://use.typekit.com/bmu2xym.js?akisc"></script>
+    #end
+	
+    
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <!--[if IE]>
+        <script type="text/javascript" src="$javascript_folder/excanvas.js"></script>
+    <![endif]-->
+    
+    
+    <!-- AddThis Button BEGIN -->
+    <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=climatecolab"></script>
+    <script type="text/javascript" src="$javascript_folder/moth_init_script.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <!-- AddThis Button END -->
+    
+    <!-- Pinterest META -->
+    <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
+
+    <!-- Tooltip -->
+    <link rel="stylesheet" type="text/css" href="$css_folder/tooltipster.css" />
+    <script type="text/javascript" src="$javascript_folder/jquery.tooltipster.js"></script>
+
+    <!-- Polling service -->
+    <script type="text/javascript" src="$javascript_folder/messageNotification.js"></script>
+
+</head>
+
+
+#if ($page.getName($locale).toLowerCase().replaceAll("\s","") == 'home')
+    #set ($body_style_class = " home ")
+#else
+    #set ($body_style_class = "other_pages")
+#end
+
+#set ($pageName=$page.getName($locale).toLowerCase().replaceAll("\s",""))
+#if ($page.parentLayoutId > 0) 
+    ## we have a parent page, find it's name
+    #foreach ($parentLayoutCand in $layouts) 
+        #if ($parentLayoutCand.layoutId == $page.parentLayoutId)
+            #set ($parentLayout = $parentLayoutCand)
+        #end
+    #end
+    #set ($parentPageName = $parentLayout.getName($locale).toLowerCase().replaceAll("\s",""))
+    #set ($subPage = true)
+    #set ($subPageClass = 'sub')
+#else 
+    #set ($subPageClass = '')
+    #set ($parentPageName = '')
+#end
+
+#if ($permissionChecker.isOmniadmin())
+#end
+
+
+<body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
+
+#if ($permissionChecker.isOmniadmin())
+	#dockbar()
+#end
+
+<div id="header">
+ <div class="inner">
+  <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" alt="Climate Colab" height="42" /></a></div>
+  <ul id="menu">
+   <li class="#if ($pageName== 'about' || $parentPageName == 'about') c #end"><a href="/web/guest/about">About</a></li>
+   <li class="#if ($pageName== 'community' || $parentPageName == 'community_old' || $pageName == 'community_old' || $parentPageName == 'community') c #end" ><a href="/web/guest/community">Community</a></li>
+   </ul>
+
+#if ($themeDisplay.signedIn)
+  #set($messageService = $serviceLocator.findService("plansProposalsFacade-portlet","com.ext.portlet.service.MessageRecipientStatusLocalService"))
+  #set($unreadMessages = $messageService.countUnreadMessages($user.userId))
+    <ul id="menu-right">
+   <li class="user"><a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
+    #if ($unreadMessages > 0)
+       <div class="user-notification user-notification-top">$unreadMessages</div>
+    #end
+   </li>
+   <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+  </ul>
+  
+  <!-- USER POPUP -->
+  <div class="userpop" id="userPopupContainer">
+   <div class="usertop"><img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></div>
+   <div class="userbox">
+    <ul>
+     <li><a href="/web/guest/member/-/member/userId/$user.userId">My profile</a></li>
+     <li>
+         <a href="/web/guest/messaging">My messages</a>
+         #if ($unreadMessages > 0)
+             <div class="user-notification user-notification-message">$unreadMessages</div>
+         #end
+     </li>
+     <li><a href="/web/guest/member/-/member/userId/$user.userId/page/subscriptions">My subscriptions</a></li>
+     #if ($permissionChecker.isOmniadmin())
+     #if ($show_control_panel)
+        <li>
+            <a href="$control_panel_url">$control_panel_text</a>
+        </li>
+     #end
+        #end
+        
+   		#foreach($role in $user.getRoles())
+   			#if($role.getName().toLowerCase() == "outreach specialist")
+   				<li><a href="/group/control_panel">Control panel</a></li>
+			#end
+		#end
+     <li><a href="/c/portal/logout">Log out</a></li>
+    </ul>
+   </div>
+  </div>
+<!-- /USER POPUP -->
+
+#else  
+  <ul id="menu-right">
+   <li class="register"><a href="/web/guest/loginregister?redirect=$escapeTool.url($themeDisplay.uRLCurrent)">Register</a></li>
+   <li class="login" ><a  href="javascript:;" id="loginPopupTrigger">Login</a></li>
+   <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+  </ul>
+  
+<!-- LOGIN POPUP -->
+  <div class="loginpop" id="loginPopupContainer">
+   <div class="logintop"><img src="$images_folder/icon-menu-login3.png" width="26" height="18" /></div>
+   <div class="loginbox">
+
+    <div class="loginwith">
+        <a href="/web/guest/loginregister/-/login/SSO/facebookLogin" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
+        <a href="/web/guest/loginregister/-/login/SSO/googleLogin" class="sketchy-icon google-sketchy"><span>Google</span></a>
+    </div>
+    <div class="loginwith-del"></div><div class="loginwith-or">OR</div><div class="loginwith-del"></div>
+    <div class="clearfix"></div>
+    <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true" style="margin-top: 10px;">
+     <input name="login" type="text" class="username" placeholder="username"  />
+     <input name="password" type="password" class="password" placeholder="password" />
+     <input name="redirect" type="hidden" />
+     <span><em><a href="javascript:;" class="forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="login-submit" value="LOGIN" id="loginPopupTopSubmit"/>
+    </form>
+   </div>
+  </div>
+<!-- /LOGIN POPUP -->
+#end
+  
+<!-- SEARCH POPUP -->
+  <div class="searchpop" id="searchPopupContainer">
+   <div class="searchtop"><img src="$images_folder/icon-menu-search2.png" width="20" height="19" /></div>
+   <div class="searchbox">
+     <input name="search-term" type="text" class="search-term" value="" id="searchinput" />
+     <input name="submit" type="submit" class="search-submit" value="GO" id="searchsubmit" />
+    </div>
+  </div>
+<!-- /SEARCH POPUP -->
+
+     <!-- ERROR REPORT POPUP -->
+     <div id="popup_error_reporting" class="popup-wrap" style="display: none;">
+         <div class="popup">
+             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_error_reporting').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
+
+             <h4>Oh Snap!</h4>
+             <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0px;">
+                 <form id="signInForm_form" method="post" action="/c/reportError">
+                     <input name="url" type="hidden" />
+                     <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${exception.stackTrace}"/>
+                     <div class="info-message">
+                         <p>Unfortunately your request caused an error. To help us improve our service we would kindly ask you to provide a short description of the steps you took prior to receiving this message.</p>
+                     </div>
+                     <textarea name="description" class="username" style="width:98%; min-height: 50px; margin-top: -10px;" placeholder="Description" ></textarea>
+                     <br/>
+                     <br/>
+                     <div class="info-message">
+                         <p>If you provide your e-Mail address below we will let you know as soon as we've fixed the problem</p>
+                     </div>
+                     <input type="text" name="email" class="email" style="width:98%; min-height: 25px; padding-left: 2%; margin-top: -10px;" placeholder="Email address" />
+                     <div class="clearfix"><!-- --></div>
+                     <div class="btns">
+                         <a class="primary-button login-submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
+                     </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+     <!-- /ERROR REPORT POPUP -->
+  
+  
+ </div>
+</div> <!-- /header -->
+
+
+$theme.include($top_messages_include)
+
+
+        ##parse ("$full_templates_path/dock.vm")
+
+<div id="wrapper">
+
+	#if ($selectable)
+		$theme.include($content_include)
+	#else
+		$portletDisplay.recycle()
+
+		$portletDisplay.setTitle($the_title)
+
+		$theme.wrapPortlet("portlet.vm", $content_include)
+	#end
+	
+
+</div>
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    /* ]]> */
+</script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    try {
+        var path = window.location.pathname + window.location.search + window.location.hash;
+        var pageTracker = _gat._getTracker("UA-11944310-1");
+        pageTracker._setAllowAnchor(true);
+        pageTracker._trackPageview(path);
+    } catch(err) {
+    }
+    /* ]]> */
+</script>
+#if ($request.getSession().getAttribute('collab_user_has_registered'))
+    <script type="text/javascript">
+// disabled in test env
+	try {
+	        $request.getSession().removeAttribute('collab_user_has_registered')
+        	pageTracker._trackPageview('/colab/$user.screenName/registered');
+		pageTracker._trackEvent('Users', 'registered', '', 1);
+	}
+	catch(err) {
+	}
+    </script>
+#end
+
+#if ($request.getSession().getAttribute('user_from_landing_page'))
+    <script type="text/javascript">
+        try {
+			pageTracker._trackPageview('$request.getSession().getAttribute("user_from_landing_page")');
+        	$request.getSession().removeAttribute('user_from_landing_page')
+	}
+	catch(err) {
+	}
+    </script>
+#end
+
+    #parse ("$full_templates_path/sign_in_popup.vm")
+    #parse ("$full_templates_path/jsadditions.vm")
+    #parse ("$full_templates_path/post_registration_popup.vm")
+    
+#if ($request.getSession().getAttribute('xcolab_global_messages'))
+	<script type="text/javascript">
+		#foreach ($message in $request.getSession().getAttribute('xcolab_global_messages'))
+			jQuery.jGrowl('$message.message', { sticky: true, theme: 'iphone', themeState: 'none' });
+		#end
+	</script>
+	// remove attribute to prevent displaying messages on other pages 
+	$request.getSession().removeAttribute('xcolab_global_messages');
+#end
+
+#if ($request.getSession().getAttribute('xcolab_analytics_events'))
+	<script type="text/javascript">
+		#foreach ($event in $request.getSession().getAttribute('xcolab_analytics_events'))
+			pageTracker._trackEvent('$event.category', '$event.action', '$event.label', $event.value);
+		#end
+	</script>
+	<!-- remove attribute as events should be reported only once -->
+	$request.getSession().removeAttribute('xcolab_analytics_events');
+#end
+
+$theme.include($body_bottom_include)
+
+$theme.include($bottom_include)
+<script src="$javascript_folder/balloon.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+<script>var usertracking_userId = $user.userId;var usertracking_hash = $user.uuid.hashCode();</script>
+<script src="$javascript_folder/usertracking.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+</body>
+
+</html>

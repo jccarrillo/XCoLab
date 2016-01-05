@@ -163,7 +163,7 @@
                     </c:if>
                 </div>
             </div>
-            <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px;">
+            <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px; display: none;">
                 <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox"
                      style="float: left;">
                     <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}"
