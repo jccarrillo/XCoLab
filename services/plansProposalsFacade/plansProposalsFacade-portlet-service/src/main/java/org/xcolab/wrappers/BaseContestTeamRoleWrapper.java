@@ -26,6 +26,17 @@ public class BaseContestTeamRoleWrapper implements Serializable {
         return roleName;
     }
 
+    public String getDisplayName() {
+        switch (roleName) {
+            case "Fellow":
+                return "Facilitator";
+            case "Advisor:":
+                return "Participant";
+            default:
+                return roleName;
+        }
+    }
+
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }

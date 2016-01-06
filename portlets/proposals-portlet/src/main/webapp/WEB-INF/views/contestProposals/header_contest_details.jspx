@@ -194,10 +194,10 @@
                                             <td class="contestTeamRoleName">
                                                 <c:choose>
                                                     <c:when test="${fn:length(teamRole.users) eq 1}">
-                                                        <div style="width: 65px; display: inline-block;">${teamRole.roleName}</div>
+                                                        <div style="width: 65px; display: inline-block;">${teamRole.displayName}</div>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <div style="width: 65px; display: inline-block;">${teamRole.roleName}s</div>
+                                                        <div style="width: 65px; display: inline-block;">${teamRole.displayName}s</div>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
