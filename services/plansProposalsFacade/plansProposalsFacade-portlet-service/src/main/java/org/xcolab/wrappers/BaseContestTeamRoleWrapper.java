@@ -30,7 +30,7 @@ public class BaseContestTeamRoleWrapper implements Serializable {
         switch (roleName) {
             case "Fellow":
                 return "Facilitator";
-            case "Advisor:":
+            case "Advisor":
                 return "Participant";
             default:
                 return roleName;
