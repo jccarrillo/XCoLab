@@ -130,7 +130,7 @@
        <div class="user-notification user-notification-top">$unreadMessages</div>
     #end
    </li>
-   <li class="help"><a href="/web/guest/help">Help</a></li>
+   <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
   </ul>
   
   <!-- USER POPUP -->
