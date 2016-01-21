@@ -371,6 +371,7 @@ public class ContestScheduleWrapper {
         }
         existingContestPhase.setFellowScreeningActive(contestSchedulePhase.getFellowScreeningActive());
         ContestPhaseLocalServiceUtil.updateContestPhase(existingContestPhase);
+
     }
 
     private static void setNewContestPhasePK(ContestPhase contestPhase, Contest contest) throws SystemException {

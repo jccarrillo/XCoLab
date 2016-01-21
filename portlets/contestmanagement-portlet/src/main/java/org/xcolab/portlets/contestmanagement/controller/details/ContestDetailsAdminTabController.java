@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-import com.ext.portlet.model.ContestWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -21,6 +20,7 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.wrapper.TabWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -58,13 +58,13 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         }
 
         setPageAttributes(request, model, tab);
-        model.addAttribute("contestAdminBean", new ContestWrapper(getContest()));
+        model.addAttribute("contestAdminBean", new BaseContestWrapper(getContest()));
         return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestAdmin")
     public void updateTeamTabController(ActionRequest request, Model model,
-                                        @ModelAttribute ContestWrapper updateContestAdminBean,
+                                        @ModelAttribute BaseContestWrapper updateContestAdminBean,
                                         ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
