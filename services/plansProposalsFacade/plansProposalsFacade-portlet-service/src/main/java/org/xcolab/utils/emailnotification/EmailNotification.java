@@ -1,7 +1,6 @@
 package org.xcolab.utils.emailnotification;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
@@ -22,12 +21,9 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This abstract class defines common helper methods for Email Notification Util classes
@@ -214,23 +210,23 @@ public abstract class EmailNotification {
     protected abstract User getRecipient() throws SystemException, PortalException;
 
     public void sendEmailNotification() throws SystemException, PortalException {
-        EmailTemplateWrapper template = getTemplateWrapper();
-        String subject = template.getSubject();
-        String body = template.getHeader()+"\n"+template.getFooter();
-        sendMessage(subject, body, getRecipient());
+//        EmailTemplateWrapper template = getTemplateWrapper();
+//        String subject = template.getSubject();
+//        String body = template.getHeader()+"\n"+template.getFooter();
+//        sendMessage(subject, body, getRecipient());
     }
 
     public void sendMessage() throws SystemException, PortalException {
-        List<Long> recipients = new ArrayList<>();
-        recipients.add(getRecipient().getUserId());
-        EmailTemplateWrapper template = getTemplateWrapper();
-        try {
-            String content = template.getHeader() + template.getFooter();
-            content = content.replace("\n", " ").replace("\r", " ");
-            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
-        } catch (MailEngineException | AddressException e) {
-            throw new SystemException(e);
-        }
+//        List<Long> recipients = new ArrayList<>();
+//        recipients.add(getRecipient().getUserId());
+//        EmailTemplateWrapper template = getTemplateWrapper();
+//        try {
+//            String content = template.getHeader() + template.getFooter();
+//            content = content.replace("\n", " ").replace("\r", " ");
+//            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+//        } catch (MailEngineException | AddressException e) {
+//            throw new SystemException(e);
+//        }
     }
 
     protected class EmailNotificationTemplate extends EmailTemplateWrapper {
