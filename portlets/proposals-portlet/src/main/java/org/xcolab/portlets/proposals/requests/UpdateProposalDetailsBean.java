@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.requests;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -11,13 +12,16 @@ import java.util.Map;
 
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<Long, String>();
-    private String pitch;
 
-    @NotBlank
+    @Length(min = 5, max = 80, message = "The name is not allowed to exceed 80 characters.")
     private String name;
 
-
+    @Length(min = 0, max = 20, message = "The team name is not allowed to exceed 20 characters.")
     private String team;
+
+    @Length(min = 5, max = 140, message = "The pitch is not allowed to exceed 140 characters.")
+    private String pitch;
+
     private long imageId;
     private long baseProposalId;
     private long baseProposalContestId;

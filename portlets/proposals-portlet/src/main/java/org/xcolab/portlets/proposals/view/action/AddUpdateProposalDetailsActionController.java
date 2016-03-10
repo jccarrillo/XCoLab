@@ -224,59 +224,73 @@ public class AddUpdateProposalDetailsActionController {
 
         boolean updateProposalReferences = false;
         for (ProposalSectionWrapper section: proposal.getSections()) {
-            String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
-            if (section.getType() == PlanSectionTypeKeys.TEXT
-                    || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
-                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
-                if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
-                    if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
-                        updateProposalReferences = true;
-                    }
-                } else {
-                	filledAll = false;
-                }
-            }
-            if (section.getType() == PlanSectionTypeKeys.ONTOLOGY_REFERENCE) {
-                // value 
-                if (StringUtils.isNumeric(newSectionValue)) {
-                    long newNumericVal = Long.parseLong(newSectionValue);
-                    if (newNumericVal != section.getNumericValue()) {
-                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
-                                proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
-                    }
-                } else {
-                	filledAll = false;
-                }
-            }
-            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_REFERENCE) {
-                if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
-                    final long newNumericValue = Long.parseLong(newSectionValue);
-                    if (section.getNumericValue() != newNumericValue) {
-                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
-                        updateProposalReferences = true;
-                    }
-                } else if (StringUtils.isBlank(newSectionValue)) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
-                }
-            }
-            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
-                // check if all parts are numeric
-                StringBuilder cleanedReferences = new StringBuilder();
-                if (StringUtils.isNotBlank(newSectionValue)){
-                    String[]referencedProposals = newSectionValue.split(",");
-                    for (String referencedProposal : referencedProposals) {
-                        if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal)) {
-                            cleanedReferences.append(referencedProposal).append(",");
+            String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
+                if (section.getType() == PlanSectionTypeKeys.TEXT
+                        || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
+                        || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
+                    if (newSectionValue != null) {
+                        String s = newSectionValue.trim()
+                                .replaceAll("<[^>]*>", "")
+                                .replaceAll("&nbsp;", "")
+                                .replaceAll("&[a-z]+;", " ")
+                                .replaceAll("&#[1-9]+;", " ")
+                                .replaceAll("[\\t\\n\\r]", "");
+                        if (s.length() <= section.getCharacterLimit() && !newSectionValue.trim().equals(section.getContent())) {
+                            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
+                            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+                                updateProposalReferences = true;
+                            }
+                        } else {
+                            response.setRenderParameter("error", "true");
+                            response.setRenderParameter("action", "updateProposalDetails");
+                            response.setRenderParameter("edit", "true");
+                            request.setAttribute("ACTION_ERROR", true);
+                            return;
                         }
+                    } else {
+                        filledAll = false;
                     }
-                    //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
                 }
-                if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
-                    updateProposalReferences = true;
+                if (section.getType() == PlanSectionTypeKeys.ONTOLOGY_REFERENCE) {
+                    // value
+                    if (StringUtils.isNumeric(newSectionValue)) {
+                        long newNumericVal = Long.parseLong(newSectionValue);
+                        if (newNumericVal != section.getNumericValue()) {
+                            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
+                                    proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
+                        }
+                    } else {
+                        filledAll = false;
+                    }
                 }
-            }
+                if (section.getType() == PlanSectionTypeKeys.PROPOSAL_REFERENCE) {
+                    if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
+                        final long newNumericValue = Long.parseLong(newSectionValue);
+                        if (section.getNumericValue() != newNumericValue) {
+                            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
+                            updateProposalReferences = true;
+                        }
+                    } else if (StringUtils.isBlank(newSectionValue)) {
+                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
+                    }
+                }
+                if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
+                    // check if all parts are numeric
+                    StringBuilder cleanedReferences = new StringBuilder();
+                    if (StringUtils.isNotBlank(newSectionValue)) {
+                        String[] referencedProposals = newSectionValue.split(",");
+                        for (String referencedProposal : referencedProposals) {
+                            if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal)) {
+                                cleanedReferences.append(referencedProposal).append(",");
+                            }
+                        }
+                        //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
+                    }
+                    if (!section.getStringValue().equals(cleanedReferences.toString())) {
+                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
+                        updateProposalReferences = true;
+                    }
+                }
         }
 
         final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
