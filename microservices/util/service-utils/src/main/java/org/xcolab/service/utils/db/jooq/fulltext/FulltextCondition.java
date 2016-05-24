@@ -1,9 +1,7 @@
 package org.xcolab.service.utils.db.jooq.fulltext;
 
-import org.jooq.Configuration;
 import org.jooq.Context;
 import org.jooq.Field;
-import org.jooq.QueryPart;
 import org.jooq.impl.CustomCondition;
 import org.jooq.impl.DSL;
 
@@ -30,11 +28,7 @@ public class FulltextCondition extends CustomCondition {
 
     @Override
     public void accept(Context<?> context) {
-        context.visit(delegate(context.configuration()));
-    }
-
-    private QueryPart delegate(Configuration configuration) {
-        switch (configuration.dialect().family()) {
+        switch (context.configuration().dialect().family()) {
             case MYSQL:
                 StringBuilder sql = new StringBuilder("MATCH (");
                 boolean isFirst = true;
@@ -43,7 +37,7 @@ public class FulltextCondition extends CustomCondition {
                         sql.append(field.getName());
                         isFirst = false;
                     } else {
-                        sql.append(", ").append(field);
+                        sql.append(", ").append(field.getName());
                     }
                 }
                 sql.append(") AGAINST ('");
@@ -52,7 +46,8 @@ public class FulltextCondition extends CustomCondition {
                     sql.append(" ").append(searchModifier.name());
                 }
                 sql.append("')");
-                return DSL.condition(sql.toString());
+                context.visit(DSL.condition(sql.toString()));
+                break;
             default:
                 throw new UnsupportedOperationException("Dialect not supported");
         }

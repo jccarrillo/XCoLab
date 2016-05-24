@@ -25,7 +25,13 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+	</dependencies>
 	
 	<build>
 		<plugins>
@@ -66,7 +72,7 @@
 						<database>
 							<includes>
 								comment_.*|xcolab_ProposalAttribute|xcolab_ContentArticleVersion
-								|xcolab_Contest|members_Member|BlogEntry
+								|xcolab_Contest|members_Member
 							</includes>
 						</database>
 					</generator>
