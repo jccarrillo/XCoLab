@@ -3,7 +3,6 @@ package org.xcolab.service.utils.db.jooq.fulltext;
 import org.jooq.Context;
 import org.jooq.Field;
 import org.jooq.impl.CustomCondition;
-import org.jooq.impl.DSL;
 
 public class FulltextCondition extends CustomCondition {
 
@@ -30,23 +29,22 @@ public class FulltextCondition extends CustomCondition {
     public void accept(Context<?> context) {
         switch (context.configuration().dialect().family()) {
             case MYSQL:
-                StringBuilder sql = new StringBuilder("MATCH (");
+                context.sql("MATCH (");
                 boolean isFirst = true;
                 for (Field<?> field : fields) {
                     if (isFirst) {
-                        sql.append(field.getName());
+                        context.visit(field);
                         isFirst = false;
                     } else {
-                        sql.append(", ").append(field.getName());
+                        context.sql(", ").visit(field);
                     }
                 }
-                sql.append(") AGAINST ('");
-                sql.append(query);
+                context.sql(") AGAINST ('");
+                context.literal(query);
                 if (searchModifier != FulltextSearchModifier.NONE) {
-                    sql.append(" ").append(searchModifier.name());
+                    context.sql(" " + searchModifier.name());
                 }
-                sql.append("')");
-                context.visit(DSL.condition(sql.toString()));
+                context.sql("')");
                 break;
             default:
                 throw new UnsupportedOperationException("Dialect not supported");

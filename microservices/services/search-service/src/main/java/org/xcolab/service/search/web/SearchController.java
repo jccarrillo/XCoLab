@@ -22,7 +22,7 @@ public class SearchController {
     private SearchDao searchDao;
 
     @RequestMapping("/search")
-    public List<SearchResult> findProposalAttributes(
+    public List<SearchResult> findMembers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,

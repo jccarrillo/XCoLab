@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.service.search.domain.SearchDao;
+import org.xcolab.service.search.wrappers.MemberSearchResult;
 import org.xcolab.service.search.wrappers.SearchResult;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,21 +21,13 @@ public class SearchService {
         this.searchDao = searchDao;
     }
 
-    public List<SearchResult> searchProposals(PaginationHelper paginationHelper, String query) {
-        final List<SearchResult> results = searchDao
-                .searchProposalAttributes(paginationHelper, query);
-        for (SearchResult result : results) {
-            result.applyHighlight(query);
-        }
-        return results;
-    }
-
     public List<SearchResult> searchMembers(PaginationHelper paginationHelper, String query) {
-        final List<SearchResult> results = searchDao
+        final List<MemberSearchResult> memberResults = searchDao
                 .searchMembers(paginationHelper, query);
-        for (SearchResult result : results) {
-            result.applyHighlight(query);
+        final List<SearchResult> searchResults = new ArrayList<>();
+        for (MemberSearchResult result : memberResults) {
+            searchResults.add(result.getSearchResult(query));
         }
-        return results;
+        return searchResults;
     }
 }

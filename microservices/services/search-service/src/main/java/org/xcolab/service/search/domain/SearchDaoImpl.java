@@ -5,6 +5,7 @@ import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.service.search.wrappers.MemberSearchResult;
 import org.xcolab.service.search.wrappers.SearchResult;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.db.jooq.fulltext.FulltextCondition;
@@ -37,21 +38,18 @@ public class SearchDaoImpl implements SearchDao {
     }
 
     @Override
-    public List<SearchResult> searchMembers(PaginationHelper paginationHelper, String query) {
+    public List<MemberSearchResult> searchMembers(PaginationHelper paginationHelper, String query) {
         final FulltextCondition fulltextCondition =
                 match(MEMBER.FIRST_NAME, MEMBER.LAST_NAME, MEMBER.SHORT_BIO, MEMBER.SCREEN_NAME)
                         .against(query);
         final Field<Double> relevance = fulltextCondition.as("relevance");
-        return dslContext.select(
-                    MEMBER.FIRST_NAME.concat(" ")
-                            .concat(MEMBER.LAST_NAME).concat(" (")
-                            .concat(MEMBER.SCREEN_NAME).concat(")")
-                            .as("title"),
-                    MEMBER.SHORT_BIO.as("content"), relevance)
+        return dslContext
+                .select(MEMBER.FIRST_NAME, MEMBER.LAST_NAME, MEMBER.SCREEN_NAME,
+                    MEMBER.SHORT_BIO, relevance)
                 .from(MEMBER)
-                .where(fulltextCondition)
+                .where(fulltextCondition.and(MEMBER.STATUS.eq(0)))
                 .orderBy(relevance.desc())
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
-                .fetchInto(SearchResult.class);
+                .fetchInto(MemberSearchResult.class);
     }
 }
