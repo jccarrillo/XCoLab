@@ -8,7 +8,7 @@ jdk:
   - openjdk7
 
 before_install:
-	- travis-ci/presetup.sh
+	- travis-ci/./presetup.sh
 
 install: mvn -B install -U -DskipTests=true
 
