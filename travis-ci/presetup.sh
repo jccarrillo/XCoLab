@@ -1,3 +1,5 @@
 #!/bin/bash
 
-cp microservices/services/src/main/resources/application.properties $HOME/.xcolab.application.properties
+set -e -u
+
+cp microservices/services/src/main/resources/application.properties /home/travis/.xcolab.application.properties
