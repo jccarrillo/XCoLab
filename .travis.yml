@@ -10,7 +10,7 @@ jdk:
 before_install:
   - travis-ci/./presetup.sh
 
-install: mvn -B install -U -DskipTests=true
+install: mvn -B install -U -DskipTests=true -Dmaven.test.skip=true
 
 script: mvn -B verify -U -Dmaven.javadoc.skip=true
 
